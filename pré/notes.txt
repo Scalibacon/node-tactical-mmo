@@ -1,0 +1,128 @@
+************************** SOBRE TECNOLOGIAS **************************
+- Enviar do socket pros clients os eventos, não só o state;
+- Nas partidas, os clients armazenarão os eventos em uma fila de 
+execução;
+- Client terá sua própria estrutura de dados pra desenhar, que será
+atualizada conforme o recebimento dos eventos do socket;
+
+************************** SOBRE O GAME **************************
+- Será um MMORPG tático;
+- O jogador irá andar pelo mapa juntamente com todos os outros jogadores
+online, e as partidas serão realizadas à parte em um mapa típico de RPGs
+táticos;
+
+************************** GAME WORLD MAP **************************
+----------------------------- JOGADOR ------------------------
+- Cada jogador terá um username, email, senha, dinheiro, itens, aliados,
+(algo que indique as decisões/história), (algo que indique o mapa/x,y) e
+o personagem principal;
+
+
+------------------------------- MAP --------------------------
+- Todos os jogadores irão se locomover pelo mesmo mundo;
+- Os jogadores poderão interagir com NPCs;
+- Os jogadores poderão aceitar quests;
+- Os jogadores poderão organizar sua equipe;
+- Os jogadores poderão organizar seus itens;
+-? Os jogadores poderão interagir com alguns spots (i.e. minérios);
+- Alguns pontos dos mapas poderão levar o jogador para outro mapa;
+- Em certos locais, o jogador poderá ser atacado por inimigos, entrando
+em combate (match);
+
+------------------------------- NPCs --------------------------
+- NPCs irão abrir uma caixa de diálogo ao interagir com eles;
+- Alguns diálogos irão exigir respostas do jogador;
+- Alguns NPCs irão vender/comprar itens;
+-? Alguns NPCs forncerão quests pro jogador;
+
+
+*************************** GAME MATCH ***************************
+
+----------------------- MOVIMENTAÇÃO --------------------
+- Cada personagem poderá se mover apenas uma vez por turno;
+- Um personagem não poderá passar por células ocupadas pela outra
+equipe;
+- Um personagem não poderá ocupar uma célula já ocupada por outro
+personagem;
+- A quantia de células que o personagem poderá se locomover por turno
+dependerá de X fatores;
+
+------------------------- COMBATE -----------------------
+- Cada personagem poderá atacar apenas uma vez por turno;
+- Um personagem só poderá atacar caso o alvo esteja dentro do seu
+alcance;
+- Quando um personagem é atacado, ele poderá contra atacar o atacante;
+-? Quando um personagem atacar/contra atacar, sua arma perde durabilidade;
+- Um personagem que atacar não poderá atacar, usar skill ou itens durante 
+o mesmo turno;
+- Um ataque poderá ser acerto crítico ou desviado;
+- Se o atacante possuir X de velocidade a mais que o alvo, ele atacará
+novamente após o contra ataque (caso sobreviva);
+
+------------------------ PARTIDAS -----------------------
+- As partidas ocorrem entre 2 equipes em um mapa matricial;
+- A partida acaba quando uma equipe for derrotada ou desistir;
+- Podem ser entre 2 jogadores ou do jogador contra uma IA;
+- Cada equipe poderá ter no máximo 5? personagens;
+- Os personagens poderão se mover apenas uma vez por turno;
+- Os personagens poderão atacar os personagens do outro time;
+- Algumas partidas poderão ser 1x1, entrando apenas o personagem
+principal.
+
+------------------------- ITENS -------------------------
+- Itens poderão ser adiquiridos comprando, dropando ou em recompensas;
+- Itens serão divididos em:
+-> Consumíveis: podem ser usados em partidas;
+-> Armas: equipadas aos personagens;
+-> Criação: usadas para criar algum item ou só vender; 
+
+- Cada personagem poderá carregar consigo até 4? itens em partidas;
+- Um personagem que usar um item em partida não poderá atacar, usar
+skill ou itens durante o mesmo turno;
+-? Se uma arma tiver sua durabilidade zerada, ela quebrará e não poderá
+ser equipada até ser restaurada;
+-? Ferreiros podem restaurar armas quebradas;
+
+---------------------- HABILIDADES ----------------------
+- Cada classe terá suas habilidades passivas (ability) e uma árvore de 
+habilidades (skills);
+- Os personagens irão desbloqueando as skills conforme sobem de nível;
+- Skills custam energia para serem utilizadas e possuem CD (cooldown)
+para que possam ser utilizadas novamente;
+-? Somente 4 skills podem ser usadas em partidas por um personagem;
+- Um personagem que usar uma skill em partida não poderá atacar, usar
+itens ou skills durante o mesmo turno;
+
+
+---------------------- PERSONAGENS ----------------------
+- Cada personagem terá HP, Energia, Força, Poder, Defesa, Resistência,
+Velocidade e Crítico;
+- Personagens terão também Fome, que prejudicará suas ações conforme vai
+aumentando;
+- Cada personagem terá uma classe;
+- Os personagens ganharão atributos conforme sobem de nível, seguindo a
+tabela de distribuição de sua classe;
+- Cada personagem terá uma personalidade, que beneficiará o ganho de um
+ou mais atributos (ganho por nível) e prejudicará outro(s);
+-? Personagens terão pontos de esforço (EVs)*;
+* Esses pontos são adquiridos ao derrotar inimigos. Cada inimigo dará
+um ponto equivalente ao seu status mais elevado. Esses pontos elevam
+os atributos do possuidor um pouco.
+
+------------------------ CLASSES ------------------------
+- O jogo possuirá inicialmente as seguintes classes/evoluções para os 
+personagens:
+-> Guerreiro / Berserker - Paladino
+-> Ladino / Assassino - Renegado
+-> Mago / Arquimago - Feiticeiro
+-> Arqueiro /  Caçador - Sniper
+-> Noviço / Sacerdote - Shaman
+-? Mercador / Ferreiro - Alquimista
+
+- Cada tier de classe terá um nível máximo alcançável pelo personagem;
+- Cada classe terá suas próprias habilidades e armas empunháveis;
+- Para subir de classe, o personagem deve atingir certo nível e possuir
+o item adequado para sua promoção;
+- Ao subir de classe, o personagem volta para o nível 1;
+
+

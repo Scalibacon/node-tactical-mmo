@@ -1,0 +1,86 @@
+.item (
+    id,
+    name,
+    type,
+    ?price /* se for tabelado */
+)
+
+.user (
+    id,
+    username,
+    email,
+    password,
+    last_login
+)
+
+.progress (
+    id,
+    ?description
+)
+
+.user_progress (
+    id_user,
+    id_progress
+)
+
+main_character (
+    cash,
+    character_id
+)
+
+user_item ( /* ou main */
+    id_user, /* ou main */
+    id_item,
+    quantity
+)
+
+.class (
+    name,
+)
+
+.character (
+    id,
+    id_user,
+
+    name,
+    class,
+    level,
+    experience,
+    hunger,
+    alive,
+
+    base_max_hp,
+    base_max_energy,
+    base_strength,
+    base_power,
+    base_defense,
+    base_resistance,
+    base_speed,
+    base_technique,
+    base_luck,
+
+    lost_hp,
+    lost_energy,
+
+    ?effort_points,
+    nature,
+)
+
+.nature (
+    name,
+    hp,
+    energy,
+    strenght,
+    power,
+    defense,
+    resistance,
+    speed,
+    technique,
+    luck
+)
+
+character_item (
+    character_id,
+    item_id,
+    quantity
+)

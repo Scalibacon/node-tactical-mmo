@@ -1,0 +1,58 @@
+<html>
+    <head>
+
+    </head>
+    <style>
+        #teste{
+            width:600px;
+            height:250px;
+        }
+        #canvas {
+            border:solid 1px;
+            width:500px;
+
+            image-rendering: pixelated;
+	        image-rendering: crisp-edges;
+        }
+    </style>
+    <body>
+        <div id='teste'></div>
+
+        <canvas id='canvas'></canvas>
+    </body>
+
+    <script src="input.js"></script>
+    <script src="Sprite.js"></script>
+
+    <script type="module">
+
+        const img = new Image();
+        img.src = 'sprite-player.png';
+        img.onload = function(){
+            main();
+        }
+
+        var ctx = document.getElementById('canvas').getContext('2d');
+
+        /* 3º -> 0 - 24 */
+        var teste = new Sprite(img, 0, 24, 16, 25, [0,1,2,3,4,5,6,7]);
+       
+        var lastTime = Date.now();
+        function main() {
+            ctx.clearRect(0,0, 300, 300)
+
+            var now = Date.now();
+            var dt = (now - lastTime) / 1000.0;
+
+            teste.update(dt);
+            teste.render(ctx, {x: 50, y: 50});
+
+            lastTime = now;
+            
+           // ctx.drawImage(img, 0, 0);
+
+            requestAnimationFrame(main);
+        };       
+   
+    </script>
+</html>
