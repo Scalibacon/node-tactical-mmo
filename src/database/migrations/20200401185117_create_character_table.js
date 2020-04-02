@@ -20,6 +20,7 @@ exports.up = function(knex) {
         .createTable('character', function(table){
             table.string('id').primary();
             table.string('id_user').notNullable();
+            table.boolean('main').notNullable();
 
             table.string('name').primary();
             table.string('class').notNullable().defaultTo('Aprendiz');

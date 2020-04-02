@@ -10,6 +10,8 @@ exports.up = function(knex) {
         table.string('type').notNullable();
         table.integer('price');
         table.string('description');
+
+        table.foreign('type').references('type').inTable('item_type');
     });
 };
 

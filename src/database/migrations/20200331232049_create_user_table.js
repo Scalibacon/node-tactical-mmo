@@ -5,7 +5,11 @@ exports.up = function(knex) {
         table.string('username').notNullable();
         table.string('email').notNullable();
         table.string('password').notNullable();
-        table.bigInteger('last_login');
+        table.timestamp('last_login').defaultTo(knex.fn.now());
+        
+        table.integer('gold_coins').notNullable().defaultTo(0);
+        table.integer('silver_coins').notNullable().defaultTo(0);
+        table.integer('bronze_coins').notNullable().defaultTo(0);
     });
 };
 
