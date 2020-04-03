@@ -64,6 +64,19 @@
     nature,
 )
 
+.?effort (
+    id,
+    hp,
+    energy,
+    strenght,
+    power,
+    defense,
+    resistance,
+    speed,
+    technique,
+    luck
+)
+
 .nature (
     name,
     hp,

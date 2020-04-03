@@ -4,11 +4,49 @@
     <meta charset="UTF-8">
     <title>MMORPG - Login</title>
 
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">  
+    <link rel="shortcut icon" href="assets/icons/favicon.png" />
+    <script src="js/pages/jquery-3.4.1.min.js" ></script>      
 </head>
 
 <body>
     <div id='index-container'>
-    </div>
+        <div id='center-box'>
+            <div id='box-title'>
+                <span onclick='toggleForm("login")'>Entrar</span>
+                <span onclick='toggleForm("register")'>Registrar</span>
+                <div id='underline-title'></div>
+            </div>
+
+            <div id='forms-container'>
+               
+                <section id='login'>
+                    <form method="POST" action="/sessions" id="login">
+                        <h3>Usuário:</h3>
+                        <input type='text' id='log-username' name='username' placeholder="Digite seu nome de usuário..."/>
+                        <h3>Senha:</h3>
+                        <input type='password' id='log-password' name='password' placeholder="Digite sua senha..."/>
+                        <div class='error'>Nome de usuário já cadastrado</div>
+                        <button type="button">Logar</button>
+                    </form>
+                </section>
+                
+                <section id='register'>
+                    <form method="POST" id="register">
+                        <h3>Usuário:</h3>
+                        <input type='text' name='username' placeholder="Digite seu nome de usuário..."/>
+                        <h3>E-mail:</h3>
+                        <input type='email' name='email' placeholder="Digite seu e-mail..."/>
+                        <h3>Senha:</h3>
+                        <input type='password' name='password' placeholder="Digite sua senha..."/>
+                        <div class='error'>Nome de usuário já cadastrado</div>
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>  
+
+    <script src="js/pages/index.js" ></script>  
 </body>
 </html>

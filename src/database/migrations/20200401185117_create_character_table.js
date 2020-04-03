@@ -17,6 +17,19 @@ exports.up = function(knex) {
             table.integer('technique_gain').notNullable();
             table.integer('luck_gain').notNullable();
         })
+        .createTable('effort', function(table){
+            table.string('id').primary();
+
+            table.integer('hp').notNullable().defaultTo(0);
+            table.integer('energy').notNullable().defaultTo(0);
+            table.integer('strenght').notNullable().defaultTo(0);
+            table.integer('power').notNullable().defaultTo(0);
+            table.integer('defense').notNullable().defaultTo(0);
+            table.integer('resistance').notNullable().defaultTo(0);
+            table.integer('speed').notNullable().defaultTo(0);
+            table.integer('technique').notNullable().defaultTo(0);
+            table.integer('luck').notNullable().defaultTo(0);
+        })
         .createTable('character', function(table){
             table.string('id').primary();
             table.string('id_user').notNullable();
@@ -42,16 +55,19 @@ exports.up = function(knex) {
             table.integer('lost_hp').notNullable().defaultTo(0);
             table.integer('lost_energy').notNullable().defaultTo(0);
 
+            table.string('effort').notNullable();
             table.string('nature').notNullable();
 
             table.foreign('nature').references('name').inTable('nature');
+            table.foreign('effort').references('id').inTable('effort');
         })
         
 };
 
 exports.down = function(knex) {
-    return knex.schema
-    .dropTable('character')
-    .dropTable('nature')
-    .dropTable('class');
+    return knex.schema    
+        .dropTable('character')
+        .dropTable('effort')
+        .dropTable('nature')
+        .dropTable('class');
 };
