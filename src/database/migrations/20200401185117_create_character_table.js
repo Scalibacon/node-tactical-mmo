@@ -7,15 +7,14 @@ exports.up = function(knex) {
         .createTable('nature', function(table){
             table.string('name').primary();
 
-            table.integer('hp_gain').notNullable();
-            table.integer('energy_gain').notNullable();
-            table.integer('strenght_gain').notNullable();
-            table.integer('power_gain').notNullable();
-            table.integer('defense_gain').notNullable();
-            table.integer('resistance_gain').notNullable();
-            table.integer('speed_gain').notNullable();
-            table.integer('technique_gain').notNullable();
-            table.integer('luck_gain').notNullable();
+            table.integer('hp').notNullable();
+            table.integer('energy').notNullable();
+            table.integer('strenght').notNullable();
+            table.integer('power').notNullable();
+            table.integer('defense').notNullable();
+            table.integer('resistance').notNullable();
+            table.integer('speed').notNullable();
+            table.integer('technique').notNullable();
         })
         .createTable('effort', function(table){
             table.string('id').primary();

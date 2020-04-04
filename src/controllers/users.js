@@ -8,7 +8,7 @@ module.exports.create = async function(req, res){
     const user = await connection('user').where('username', username).select('id').first();
 
     if(user){
-        return res.status(409).json({ error: "Conflict", message: "Usuário já cadastrado" });
+        return res.status(400).json({ error: "Conflict", message: "Usuário já cadastrado" });
     }
 
     try {
@@ -25,17 +25,16 @@ module.exports.create = async function(req, res){
 
     } catch (err){
         console.log(err);
-        return res.status(500).json({ error: "Erro", message: "Erro ao criar usuário" });
+        return res.status(400).json({ error: "Erro", message: "Erro ao criar usuário" });
     }
 }
 
 module.exports.list = async function(req, res){
     try {
         const users = await connection('user').select('*');
-
         return res.json(users);
     } catch(err){
         console.log(err);
-        return res.status(500).json({ error: "Erro", message: "Erro ao listar usuários" });
+        return res.status(400).json({ error: "Erro", message: "Erro ao listar usuários" });
     }
 }

@@ -16,9 +16,13 @@ app.use(session({
 }))
 
 app.use(express.static('src/public'));
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.json());
 app.use(routes);
 app.use(errors());
+
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
 
 module.exports = app;

@@ -5,8 +5,8 @@
     <title>MMORPG - Login</title>
 
     <link rel="stylesheet" type="text/css" href="css/index.css">  
-    <link rel="shortcut icon" href="assets/icons/favicon.png" />
-    <script src="js/pages/jquery-3.4.1.min.js" ></script>      
+    <link rel="shortcut icon" href="assets/icons/favicon.png" />     
+
 </head>
 
 <body>
@@ -21,26 +21,26 @@
             <div id='forms-container'>
                
                 <section id='login'>
-                    <form method="POST" action="/sessions" id="login">
+                    <form id="login">
                         <h3>Usuário:</h3>
-                        <input type='text' id='log-username' name='username' placeholder="Digite seu nome de usuário..."/>
+                        <input type='text' id='log-username' placeholder="Digite seu nome de usuário..."/>
                         <h3>Senha:</h3>
-                        <input type='password' id='log-password' name='password' placeholder="Digite sua senha..."/>
+                        <input type='password' id='log-password' placeholder="Digite sua senha..."/>
                         <div class='error'>Nome de usuário já cadastrado</div>
                         <button type="button">Logar</button>
                     </form>
                 </section>
                 
                 <section id='register'>
-                    <form method="POST" id="register">
+                    <form id="register">
                         <h3>Usuário:</h3>
-                        <input type='text' name='username' placeholder="Digite seu nome de usuário..."/>
+                        <input type='text' id='reg-username' placeholder="Digite seu nome de usuário..."/>
                         <h3>E-mail:</h3>
-                        <input type='email' name='email' placeholder="Digite seu e-mail..."/>
+                        <input type='email' id='reg-email' placeholder="Digite seu e-mail..."/>
                         <h3>Senha:</h3>
-                        <input type='password' name='password' placeholder="Digite sua senha..."/>
+                        <input type='password' id='reg-password' placeholder="Digite sua senha..."/>
                         <div class='error'>Nome de usuário já cadastrado</div>
-                        <button type="submit">Cadastrar</button>
+                        <button type="button">Cadastrar</button>
                     </form>
                 </section>
             </div>

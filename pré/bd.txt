@@ -16,6 +16,20 @@
     last_login
 )
 
+.quest (
+    id,
+    name,
+    goal,
+    contractor
+)
+
+.user_quest (
+    id_user,
+    id_quest,
+    finished,
+    progress
+)
+
 .progress (
     id,
     ?description

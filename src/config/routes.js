@@ -1,14 +1,17 @@
 const express = require('express');
 const { celebrate, Joi, Segments } = require('celebrate');
 
-const { index } = require('../controllers/pages');
+const { index, home, mainCharacter } = require('../controllers/pages');
 const { login } = require('../controllers/sessions');
 const { create, list } = require('../controllers/users');
+const { listNatures } = require('../controllers/characters');
 
 const routes = express.Router();
 
 /* RENDER */
 routes.get('/', index);
+routes.get('/home', home);
+routes.get('/main-character', mainCharacter);
 
 /* API */
 routes.post('/sessions', celebrate({
@@ -27,5 +30,6 @@ routes.post('/users', celebrate({
 }), create);
 
 routes.get('/users', list);
+routes.get('/natures', listNatures);
 
 module.exports = routes;
