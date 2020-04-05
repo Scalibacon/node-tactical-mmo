@@ -116,7 +116,7 @@ personagens:
 -> Ladino / Assassino - Renegado
 -> Mago / Arquimago - Feiticeiro
 -> Arqueiro /  Caçador - Sniper
--> Noviço / Sacerdote - Shaman
+-> Clérigo / Sacerdote - Shaman
 -? Mercador / Ferreiro - Alquimista
 
 - Cada tier de classe terá um nível máximo alcançável pelo personagem;

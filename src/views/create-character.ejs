@@ -11,8 +11,25 @@
 </head>
 
 <body>
+    <div id='background'></div>
+
     <div id='create-container'>
-        <div id='test-graph'></div>
+        <div id='box'>
+            <h2>Crie seu protagonista</h2>
+            <p>Antes de começar, você deve criar seu personagem principal. Você deve escolher um nome, um gênero e uma personalidade a ele. Tenha cuidado, pois esse personagem irá te acompanhar até o fim da sua jornada.</p>
+            <h3>Nome do personagem</h3>
+            <input type="text" id="name" placeholder="Digite o nome do personagem..."/>
+            <img id="char-gif">
+            <h3>Gênero do personagem</h3>
+            <select id="combo-gender">
+                <option value="m">Masculino</option>
+                <option value="f">Feminino</option>
+            </select>             
+            <h3>Personalidade do personagem</h3>
+            <select id="combo-nature"></select>   
+            <div id='graph-container'></div>  
+            <button id="btn-create">Criar</button>      
+        </div>
     </div>
 
     <script type='text/javascript' src='js/pages/utils/stats-graph.js'></script>

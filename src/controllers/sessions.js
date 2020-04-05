@@ -5,7 +5,7 @@ module.exports.login = async function(req, res){
     const { username, password } = req.body;
 
     try {
-        const id = await connection('user')
+        const result = await connection('user')
             .select('id')
             .where({
                 username,
@@ -13,15 +13,15 @@ module.exports.login = async function(req, res){
             })
             .first();
 
-        if(!id){
+        if(!result){
             return res.status(400).send({ error: "Bad Request", message: "Usuário e/ou senha incorreto" });
         }
 
-        req.session.id = id;
+        req.session.identifier = result.id;
         req.session.username = username;
         req.session.password = md5(password);
 
-        return res.json(id);
+        return res.json(result);
     } catch (err){
         console.log(err);
         return res.status(400).json({ error: "Erro", message: "Erro ao logar" });
