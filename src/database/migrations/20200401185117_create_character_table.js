@@ -58,11 +58,11 @@ exports.up = function(knex) {
 
             table.string('effort').notNullable();
             table.string('nature').notNullable();
+            table.string('active_skills').notNullable().defaultTo('[]');
 
             table.foreign('nature').references('name').inTable('nature');
             table.foreign('effort').references('id').inTable('effort');
-        })
-        
+        })        
 };
 
 exports.down = function(knex) {

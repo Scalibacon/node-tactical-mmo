@@ -4,7 +4,7 @@ const { celebrate, Joi, Segments } = require('celebrate');
 const { index, home, mainCharacter } = require('../controllers/pages');
 const { login } = require('../controllers/sessions');
 const { create, list } = require('../controllers/users');
-const { listNatures, createCharacter } = require('../controllers/characters');
+const { listNatures, createCharacter, getCharacters } = require('../controllers/characters');
 
 const routes = express.Router();
 
@@ -31,6 +31,7 @@ routes.post('/users', celebrate({
 
 routes.get('/users', list);
 routes.get('/natures', listNatures);
+routes.get('/characters', getCharacters);
 
 routes.post('/create-character', celebrate({
     [Segments.BODY] : Joi.object().keys({

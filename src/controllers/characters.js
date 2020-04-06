@@ -34,8 +34,23 @@ module.exports.createCharacter = async function(req, res){
         return res.json({ id });
     } catch(err){
         console.log(err);
-       return res.status(400).json({error: "Erro", message: "Erro ao criar personagem"});
+        return res.status(400).json({error: "Erro", message: "Erro ao criar personagem"});
     }
+}
+
+module.exports.getCharacters = async function(req, res){
+    try {
+        const id = req.session.identifier;
+        const chars = await connection('character AS char')
+            .select(['char.*', 'job.type', 'job.weight'])
+            .innerJoin('job', 'job.name', 'char.job')          
+            .where('id_user', id)
+
+        res.json(chars);
+    } catch(err){
+        console.log(err);
+        return res.status(400).json({error: "Erro", message: "Erro ao buscar personagens"});
+    }   
 }
 
 async function getBaseStats(nature_name){
