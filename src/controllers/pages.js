@@ -35,3 +35,17 @@ module.exports.mainCharacter = async function(req, res){
 
     res.render('create-character');
 }
+
+module.exports.game = async function(req, res){
+    if(!req.session || !req.session.identifier){
+        return res.redirect('/');
+    }
+
+    const have = await userHaveCharacter(req.session.identifier);
+
+    if(!have){        
+        return res.redirect("/main-character");
+    }
+
+    res.render('game');
+}

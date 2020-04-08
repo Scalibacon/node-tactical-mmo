@@ -11,49 +11,24 @@
 </head>
     
 <body>
-    <div id='background'></div>
+    <div id='background'></div>    
 
     <div id='home-container'>
-        <div id='char-box'>
-            <div class='char-container main'>
-                <section>
-                    <img class='char-img'>
-                    <p>Tetheus</p>
-                    <p>Aprendiz</p>
-                    <p>Level 1</p>
-                    <p>Observação</p>
-                </section>
-
-                <section>
-                    <p>HP: 15/15</p>
-                    <p>Energia: 8/8</p>
-                    <p>Exp: 0/100</p>
-                    <p>Fome: 0/10</p>
-                    <p>Peso: 3</p>
-                    <p>Vivo</p>
-                    <p>Infantaria</p>
-                </section>
-
-                <section>
-                    <p>FOR: 7</p>
-                    <p>POD: 5</p>
-                    <p>DEF: 6</p>
-                    <p>RES: 6</p>
-                    <p>VEL: 5</p>
-                    <p>TEC: 5</p>
-                    <p>SOR: 1</p>
-                </section>
-
-                <section class='big'>
-                    <!-- <span><img src='assets/items/0.png'>Navalha quebrada aa</span> -->
-                    <p class='no'>NO ITEM</p>
-                </section>
-                <section class='big'>
-                    <!-- <span><img src='assets/items/0.png'>cavar um bocado</span> -->
-                    <p class='no'>NO SKILL</p>
-                </section>
-            </div>
+        <header>
+            <button id="btn-enter-game">JOGAR</button>
+        </header>
+        <div id="profile-container">
+            <div id='toggle'><img src='assets/icons/arrow.png'></div>
+            <span id='prof-username'>Scalibacon</span>
+            <span id='prof-gold'><img src='assets/icons/gold-coin.png'/></span>
+            <span id='prof-silver'><img src='assets/icons/silver-coin.png'/></span>
+            <span id='prof-bronze'><img src='assets/icons/bronze-coin.png'/></span>
+            <span id='log-out'><img src="assets/icons/log-out.svg">Sair</span>
         </div>
+
+        <div id='char-box'>
+        </div>
+
     </div>
 
     <script src="js/pages/home.js"></script>

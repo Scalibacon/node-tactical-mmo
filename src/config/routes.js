@@ -1,9 +1,9 @@
 const express = require('express');
 const { celebrate, Joi, Segments } = require('celebrate');
 
-const { index, home, mainCharacter } = require('../controllers/pages');
-const { login } = require('../controllers/sessions');
-const { create, list } = require('../controllers/users');
+const { index, home, mainCharacter, game } = require('../controllers/pages');
+const { login, logout } = require('../controllers/sessions');
+const { create, list, profile, getPosition } = require('../controllers/users');
 const { listNatures, createCharacter, getCharacters } = require('../controllers/characters');
 
 const routes = express.Router();
@@ -12,6 +12,7 @@ const routes = express.Router();
 routes.get('/', index);
 routes.get('/home', home);
 routes.get('/main-character', mainCharacter);
+routes.get('/game', game);
 
 /* API */
 routes.post('/sessions', celebrate({
@@ -20,6 +21,8 @@ routes.post('/sessions', celebrate({
         password: Joi.string().required()
     })
 }), login);
+
+routes.delete('/sessions', logout);
 
 routes.post('/users', celebrate({
     [Segments.BODY] : Joi.object().keys({
@@ -30,6 +33,7 @@ routes.post('/users', celebrate({
 }), create);
 
 routes.get('/users', list);
+routes.get('/profile', profile);
 routes.get('/natures', listNatures);
 routes.get('/characters', getCharacters);
 

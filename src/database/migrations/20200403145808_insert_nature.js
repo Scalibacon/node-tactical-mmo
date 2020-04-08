@@ -60,12 +60,12 @@ exports.up = function(knex) {
             name: "Solitário",
             hp: 10,
             energy: 60,
-            strenght: 80,
-            power: 10,
+            strenght: 60,
+            power: 20,
             defense: 20,
-            resistance: 50,
+            resistance: 40,
             speed: 100,
-            technique: 70
+            technique: 90
         },             
     ])
 };

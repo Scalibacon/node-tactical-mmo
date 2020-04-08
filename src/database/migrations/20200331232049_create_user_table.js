@@ -11,6 +11,10 @@ exports.up = function(knex) {
         table.integer('silver_coins').notNullable().defaultTo(0);
         table.integer('bronze_coins').notNullable().defaultTo(0);
 
+        table.integer('map').notNullable().defaultTo(0);
+        table.integer('x').notNullable().defaultTo(5);
+        table.integer('y').notNullable().defaultTo(5);
+
         table.unique('username');
     });
 };

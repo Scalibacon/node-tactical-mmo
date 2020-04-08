@@ -1,6 +1,12 @@
 const md5 = require('md5');
 const connection = require('../database/connection');
 
+module.exports.logout = function(req, res){
+    console.log('destroy')
+
+    res.json({success: true});
+}
+
 module.exports.login = async function(req, res){
     const { username, password } = req.body;
 
@@ -21,7 +27,7 @@ module.exports.login = async function(req, res){
         req.session.username = username;
         req.session.password = md5(password);
 
-        return res.json(result);
+        return res.json({ id: result.id });
     } catch (err){
         console.log(err);
         return res.status(400).json({ error: "Erro", message: "Erro ao logar" });

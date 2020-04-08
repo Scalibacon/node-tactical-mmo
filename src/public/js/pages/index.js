@@ -37,6 +37,8 @@ function login(){
                 showError(data.message, "login");
                 return;
             }
+            
+            sessionStorage.setItem('id', data.id);
 
             window.location.replace('/home');
         },

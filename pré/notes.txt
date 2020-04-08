@@ -4,6 +4,8 @@
 execução;
 - Client terá sua própria estrutura de dados pra desenhar, que será
 atualizada conforme o recebimento dos eventos do socket;
+- O grid terá um número de tile, que será usado como index pra buscar
+o tile que deve ser desenhado
 
 ************************** SOBRE O GAME **************************
 - Será um MMORPG tático;

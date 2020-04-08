@@ -1,3 +1,5 @@
+document.write("<script type='text/javascript' src='js/pages/utils/sweetalert2.all.min.js'></script>");
+
 const graph = new Graph("graph-container");
 let natures = [];
 
@@ -50,7 +52,7 @@ function changeNature(e){
     updateCharImage();
 }
 
-function createCharacter(){
+async function createCharacter(){
     const name = document.getElementById('name').value;
 
     const combo_gender = document.getElementById('combo-gender');
@@ -65,13 +67,20 @@ function createCharacter(){
         data: JSON.stringify({ name: name, gender: gender, nature: nature }),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: (data, textStatus, jqXHR) => {
+        success: async (data, textStatus, jqXHR) => {
             if(data.error){
                 alert(data.message);
                 return;
             } 
             
-            console.log(data); 
+            await Swal.fire({
+                type : 'success',
+                title : 'Personagem criado com sucesso!',
+                text : 'Já pode começar sua jornada',
+                confirmButtonText: 'Beleza!',
+            });
+
+            window.location.replace('/home');
         },
         statusCode: {
             400: (data) => {

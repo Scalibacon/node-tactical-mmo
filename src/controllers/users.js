@@ -1,40 +1,34 @@
-const md5 = require('md5');
-const connection = require('../database/connection');
-const generateID = require('../utils/generateID');
+const UserDAO = require('../dao/UserDAO');
 
 module.exports.create = async function(req, res){
     const { username, password, email } = req.body;
-    
-    const user = await connection('user').where('username', username).select('id').first();
 
-    if(user){
-        return res.status(400).json({ error: "Conflict", message: "Usuário já cadastrado" });
+    const result = UserDAO.createUser(username, password, email);
+
+    if(result.error){
+        return res.status(400).json({ error: result.error, message: result.message });
     }
 
-    try {
-        const id = generateID();
-
-        await connection('user').insert({
-            id,
-            username,
-            email,
-            password : md5(password)
-        });
-
-        res.json({success: true, message: 'Usuário criado com sucesso'});
-
-    } catch (err){
-        console.log(err);
-        return res.status(400).json({ error: "Erro", message: "Erro ao criar usuário" });
-    }
+    return res.json({ success: true, message: "Usuário criado com sucesso"});
 }
 
 module.exports.list = async function(req, res){
-    try {
-        const users = await connection('user').select('*');
-        return res.json(users);
-    } catch(err){
-        console.log(err);
-        return res.status(400).json({ error: "Erro", message: "Erro ao listar usuários" });
+    const result = await UserDAO.listUsers();
+    
+    if(result.error){
+        return res.status(400).json({ error: result.error, message: result.message });
     }
+
+    return res.json(result);    
+}
+
+module.exports.profile = async function(req, res){
+    const id = req.session.identifier;
+    const result = await UserDAO.getUserProfile(id);
+
+    if(result.error){
+        return res.status(400).json({ error: result.error, message: result.message });
+    }
+
+    return res.json(result);
 }
