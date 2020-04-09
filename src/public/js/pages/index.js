@@ -38,7 +38,7 @@ function login(){
                 return;
             }
             
-            sessionStorage.setItem('id', data.id);
+            localStorage.setItem('id', data.id);
 
             window.location.replace('/home');
         },
@@ -129,8 +129,7 @@ function hideError(){
     });    
 }
 
-/* set events */
-(() => {
+function setEvents(){
     const inputs = document.getElementsByTagName('input');
     Array.from(inputs).forEach(function(input) {
         input.addEventListener('focus', hideError );
@@ -153,4 +152,9 @@ function hideError(){
                 register();
          });
     }); 
+}
+
+(() => {
+    localStorage.removeItem('id');
+    setEvents();
 })();

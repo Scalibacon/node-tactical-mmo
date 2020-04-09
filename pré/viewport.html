@@ -151,8 +151,8 @@
 				cam.y = char.y - (cam.height * 0.25);
 			}
 			if(char.y + char.height > cam.bottomEdge()){
-				cam.y = char.y + char.height - (cam.width * 0.75);
-			}
+				cam.y = char.y + char.height - (cam.height * 0.75);
+			}			
 
 			//limite da câmera 
 			if(cam.x < 0){
@@ -177,6 +177,11 @@
 				var sprite = sprites[i];
 				ctx.drawImage(sprite.img, 0, 0, sprite.width, sprite.height, sprite.x, sprite.y, sprite.width, sprite.height);
 			}	
+
+			ctx.fillStyle = "red";
+			ctx.beginPath();
+			ctx.rect(cam.x + (cam.width * 0.25), cam.y + (cam.height * 0.75), cam.width * 0.5, cam.height * 0.5);
+			ctx.stroke();
 
 			ctx.restore();	
 
