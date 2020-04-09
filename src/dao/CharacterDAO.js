@@ -1,12 +1,13 @@
 const connection = require('../database/connection');
-const createBaseStats = require('../utils/createBaseStats');
-const Stats = require('../models/Stats');
+const { getTotalStats } = require('../utils/stats');
+const jobs = require('../constants/jobs.json');
+const NatureDAO = require('../dao/NatureDAO');
 
 module.exports.create = async function(id_user, main, name, gender, nature){
     const id = id_user + "0";
 
     const { hp, energy, strenght, power, defense, resistance,
-        speed, technique, luck } = await createBaseStats(nature);
+        speed, technique, luck } = NatureDAO.createBaseStats(nature);
 
     try {
         await createCharEffort(id);
@@ -28,15 +29,15 @@ module.exports.create = async function(id_user, main, name, gender, nature){
 
 module.exports.getUserCharacters = async function(id_user){
     try {
-        const chars = await connection('character AS char')
-            .select(['char.*', 'job.type', 'job.weight'])
-            .innerJoin('job', 'job.name', 'char.job')          
+        const chars = await connection('character')
+            .select('*')         
             .where('id_user', id_user)
 
         for(let i in chars){
+            chars[i] = getCharJob(chars[i]);
             chars[i].effort = await getCharEffort(chars[i].id);
             chars[i].base_stats = await getBaseStats(chars[i].id)
-            chars[i].total_stats = Stats.getTotalStats(chars[i]);
+            chars[i].total_stats = getTotalStats(chars[i]);
         }
 
         return chars;
@@ -44,6 +45,19 @@ module.exports.getUserCharacters = async function(id_user){
         console.log(err);
         return false;
     }   
+}
+
+function getCharJob(char){
+    const [job] = jobs.filter(job => job.name === char.job);
+
+    if(!job){
+        return char;
+    }
+
+    char.weight = job.weight;
+    char.type = job.type;
+
+    return char;
 }
 
 async function getBaseStats(char_id){
@@ -76,9 +90,7 @@ async function getCharEffort(char_id){
 
 async function createCharEffort(char_id){
     try {
-        await connection('effort').insert({
-            id: char_id
-        })
+        await connection('effort').insert({ id: char_id });
         return true;
     } catch (err){
         console.log(err);

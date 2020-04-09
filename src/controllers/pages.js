@@ -1,4 +1,4 @@
-const userHaveCharacter = require('../utils/userHaveCharacter');
+const { userHaveCharacter } = require('../dao/UserDAO');
 
 module.exports.index = function(req, res){
     if(req.session && req.session.identifier){

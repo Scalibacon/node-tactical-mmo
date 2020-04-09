@@ -1,22 +1,5 @@
 exports.up = function(knex) {
     return knex.schema
-        .createTable('job', function(table){
-            table.string('name').primary();
-            table.string('type').notNullable().defaultTo('Infantaria');
-            table.int('weight').notNullable().defaultTo(5);
-        })
-        .createTable('nature', function(table){
-            table.string('name').primary();
-
-            table.integer('hp').notNullable();
-            table.integer('energy').notNullable();
-            table.integer('strenght').notNullable();
-            table.integer('power').notNullable();
-            table.integer('defense').notNullable();
-            table.integer('resistance').notNullable();
-            table.integer('speed').notNullable();
-            table.integer('technique').notNullable();
-        })
         .createTable('effort', function(table){
             table.string('id').primary();
 
@@ -67,7 +50,6 @@ exports.up = function(knex) {
             table.string('itens').notNullable().defaultTo('[]');
 
             table.foreign('base_stats').references('id').inTable('base_stats');
-            table.foreign('nature').references('name').inTable('nature');
             table.foreign('effort').references('id').inTable('effort');
         })        
 };
@@ -75,7 +57,6 @@ exports.up = function(knex) {
 exports.down = function(knex) {
     return knex.schema    
         .dropTable('character')
-        .dropTable('effort')
-        .dropTable('nature')
-        .dropTable('class');
+        .dropTable('base_stats')
+        .dropTable('effort')        
 };

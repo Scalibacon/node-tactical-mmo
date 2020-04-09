@@ -3,6 +3,7 @@ const connection = require('../database/connection');
 
 module.exports.logout = function(req, res){
     console.log('destroy')
+    req.session.destroy();
 
     res.json({success: true});
 }

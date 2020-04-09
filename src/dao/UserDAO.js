@@ -60,3 +60,13 @@ module.exports.getGamingUser = async function(id){
         return {error: "Error", message: "Posição não encontrada"};
     }
 }
+
+module.exports.userHaveCharacter = async function(id_user){
+    const char = await connection('character').where('id_user', id_user).select('*').first();
+
+    if(char){
+        return true;
+    } else {
+        return false;
+    }
+}

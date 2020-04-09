@@ -1,6 +1,6 @@
 const CharacterDAO = require('../dao/CharacterDAO');
 const NatureDAO = require('../dao/NatureDAO');
-const userHaveCharacter = require('../utils/userHaveCharacter');
+const { userHaveCharacter } = require('../dao/UserDAO');
 
 module.exports.listNatures = async function(req, res){
     const result = await NatureDAO.listNatures();

@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Aprendiz",
+        "type": "Infantaria",
+        "weight": 5
+    },
+    {
+        "name": "Guerreiro",
+        "type": "Infantaria",
+        "weight": 8
+    },
+    {
+        "name": "Ladino",
+        "type": "Infantaria",
+        "weight": 6
+    },
+    {
+        "name": "Mago",
+        "type": "Infantaria",
+        "weight": 5
+    },
+    {
+        "name": "Arqueiro",
+        "type": "Infantaria",
+        "weight": 5
+    },
+    {
+        "name": "Clérigo",
+        "type": "Infantaria",
+        "weight": 5
+    }
+]

@@ -151,6 +151,7 @@ function logout(){
                 alert('Erro ao sair');
                 return;
             } 
+            localStorage.removeItem('id');
             window.location.replace('/');
         }
     });
