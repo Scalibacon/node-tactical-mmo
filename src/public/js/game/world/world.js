@@ -1,9 +1,10 @@
-import { subscribe, socket } from '../../world-socket.js';
-import { drawMapTiles } from './tilemap.js';
-import { Character } from './Character.js';
+import { subscribe, socket } from './world-socket.js';
+import { drawMapTiles } from './draw/tilemap.js';
+import { Character } from './draw/Character.js';
 import { listenAction } from './world-actions.js';
-import { Camera } from './Camera.js';
-import * as sprite_manager from './sprite-manager.js';
+import { Camera } from './draw/Camera.js';
+import * as resources from '../utils/resources.js';
+import * as spriter from './draw/spriter.js';
 
 let state, 
     canvas, 
@@ -22,9 +23,8 @@ function createCanvas(){
 
 export function prepareToDraw(){
     createCanvas();
-    subscribe(validateEvents);   
-    // sprite_manager.loadSpritesheets(startDrawing);   
-    sprite_manager.loadSpritesheets();    
+    spriter.loadSheets();
+    subscribe(validateEvents); 
 }
 
 function validateEvents(event){
@@ -45,6 +45,14 @@ const handle_events = {
         startDrawing();
     },
 
+    addPlayerToMap: function(data){
+        state.map.players[data.socketID] = new Character(data.player);;
+    },
+
+    removePlayerFromMap: function(data){
+        delete state.map.players[data.socketID];
+    },
+
     moveChar: function(data){
         const dir = data.dir;
         const id = data.id;
@@ -60,7 +68,7 @@ const handle_events = {
 
 function startDrawing(){
     //validar se o state existe EEEE se os resources carregaram
-    if(state && sprite_manager.isReady()){
+    if(state && resources.isReady()){
         initializeCamera();
         loop();
     }
@@ -108,7 +116,7 @@ function render(past_millis){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
-	ctx.translate(-camera.x, -camera.y);
+	ctx.translate(Math.floor(-camera.x), Math.floor(-camera.y));
 
     drawMapTiles(state.map, ctx);
 

@@ -26,7 +26,9 @@ WorldCharacter.prototype.move = function(dir, layout){
 
 const actions = {
     up: function(char, layout){
-        //validar no layout
+        if(!checkNewPosition(char.x, char.y-1, layout)){
+            return false;
+        }
         char.state = 'walking';
         char.y--;
         restoreCharState(char);
@@ -35,7 +37,9 @@ const actions = {
     },
 
     down: function(char, layout){
-        //validar no layout
+        if(!checkNewPosition(char.x, char.y+1, layout)){
+            return false;
+        }
         char.state = 'walking';
         char.y++;
         restoreCharState(char);
@@ -44,7 +48,9 @@ const actions = {
     },
 
     right: function(char, layout){
-        //validar no layout
+        if(!checkNewPosition(char.x+1, char.y, layout)){
+            return false;
+        }
         char.state = 'walking';
         char.x++;
         restoreCharState(char);
@@ -53,13 +59,26 @@ const actions = {
     },
 
     left: function(char, layout){
-        //validar no layout
+        if(!checkNewPosition(char.x-1, char.y, layout)){
+            return false;
+        }
         char.state = 'walking';
         char.x--;
         restoreCharState(char);
 
         return true;
     }
+}
+
+function checkNewPosition(x, y, layout){
+    if(x < 0 || x >= layout[0].length){
+        return false;
+    }
+    if(y < 0 || y >= layout.length){
+        return false;
+    }
+    
+    return true;
 }
 
 function restoreCharState(char){

@@ -1,6 +1,6 @@
 const UserDAO = require('../dao/UserDAO');
-const WorldMap = require('../models/WorldMap');
-const WorldCharacter = require('../models/WorldCharacter');
+const WorldMap = require('./WorldMap');
+const WorldCharacter = require('./WorldCharacter');
 let world;
 
 let maps = [];

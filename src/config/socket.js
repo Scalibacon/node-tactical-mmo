@@ -1,4 +1,4 @@
-const worldSocket = require('../controllers/world-socket');
+const worldSocket = require('../models/WorldSocket');
 
 module.exports.getSocket = function(server){
     let io = require('socket.io').listen(server);

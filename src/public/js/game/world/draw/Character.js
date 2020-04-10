@@ -1,6 +1,5 @@
-import * as spriter from './sprite-manager.js';
-
-const cell_size = 50;
+// const cell_size = 50;
+import { cell_size } from '../../utils/constants.js';
 
 function Character(server_char){
     this.id = server_char.id;
@@ -28,13 +27,13 @@ Character.prototype.move = function(dir){
 Character.prototype.update = function(past_millis){
     if(this.state !== "idle"){
         this.time_acting += past_millis;
-        const variation = (50 / 300) * past_millis;
+        const variation = (cell_size / 300) * past_millis;
         updatePosition(this, variation);
         if(this.time_acting >= 300){
             this.state = 'idle';
             this.time_acting = 0;
-            this.y = Math.round(this.y / 50) * 50;
-            this.x = Math.round(this.x / 50) * 50;
+            this.y = Math.round(this.y / cell_size) * cell_size;
+            this.x = Math.round(this.x / cell_size) * cell_size;
         }
     }
 }
@@ -43,10 +42,10 @@ Character.prototype.render = function(ctx){
     // this.sprite.render(ctx, this.x, this.y);
 
     ctx.fillStyle = "red";
-    ctx.fillRect(this.x + (50/2 - 24/2),
-                 this.y + (50/2 - 41/2),
-                 24,
-                 41)
+    ctx.fillRect(this.x + (cell_size/2 - this.width/2),
+                 this.y + (cell_size/2 - this.height/2),
+                 this.width,
+                 this.height)
 }
 
 function updatePosition(char, variation){

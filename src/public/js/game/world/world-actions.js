@@ -1,4 +1,4 @@
-import { isPressed } from '../../input.js';
+import { isPressed } from './input.js';
 
 export function listenAction(socket){
     if(isPressed('ArrowUp')){

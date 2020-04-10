@@ -9,11 +9,11 @@ loadMapLayout["0"] = function(){
     for(let i = 0; i < lines; i++){
         for(let j = 0; j < columns; j++){
             if(i % 3 === 0 || j % 3 === 0){
-                layout[i][j] = {tile: 1};
+                layout[i][j] = 0;
                 continue;
             }
 
-            layout[i][j] = {tile: 0};            
+            layout[i][j] = 21;            
         }
     }   
     

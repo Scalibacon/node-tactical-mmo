@@ -10,12 +10,22 @@ export function connectToWorld(){
     socket.on('enterMap', (data) => {
         const event = {type: 'enterMap', data};
         notifyAll(event)
-    })
+    });
+
+    socket.on('addPlayerToMap', (data) => {
+        const event = {type: 'addPlayerToMap', data};
+        notifyAll(event);
+    });
+
+    socket.on('removePlayerFromMap', (data) => {
+        const event = {type: 'removePlayerFromMap', data};
+        notifyAll(event);
+    });
 
     socket.on('moveChar', data => {
         const event = {type: 'moveChar', data};
         notifyAll(event);
-    })
+    });
 }
 
 function enterMap(){
