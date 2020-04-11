@@ -39,7 +39,7 @@ function Camera(canvas, focus, mapWidth, mapHeight){
 
         if(this.x < 0){
             this.x = 0;
-        }
+        }       
         if(this.x + this.width > this.mapWidth){
             this.x = this.mapWidth - this.width;
         }

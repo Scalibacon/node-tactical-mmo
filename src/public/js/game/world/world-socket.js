@@ -26,6 +26,16 @@ export function connectToWorld(){
         const event = {type: 'moveChar', data};
         notifyAll(event);
     });
+
+    socket.on('turnChar', data => {
+        const event = {type: 'turnChar', data};
+        notifyAll(event);
+    });
+
+    socket.on('startTalk', (data) => {
+        const event = {type: 'startTalk', data};
+        notifyAll(event)
+    });
 }
 
 function enterMap(){

@@ -1,5 +1,3 @@
-const cell_size = 60;
-
 const dir = {
     down: 0,
     right: 1,
@@ -16,4 +14,4 @@ function getDir(value){
     return false;
 }
 
-export {cell_size, dir, getDir};
+module.exports = {dir, getDir};

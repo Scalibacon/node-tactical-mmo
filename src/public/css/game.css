@@ -6,6 +6,8 @@
 
 canvas {
     border:solid 1px rgba(102, 51, 153, 0.5);
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
 }
 
 #game-container {

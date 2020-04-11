@@ -1,3 +1,5 @@
+const Constants = require('../utils/Constants');
+
 function WorldCharacter(game_user){
     this.id = game_user.id;
     this.username = game_user.username;
@@ -7,26 +9,66 @@ function WorldCharacter(game_user){
     this.name = game_user.name;
     this.gender = game_user.gender;
     this.job = game_user.job;
-    this.dir = 'down';
+    this.dir = Constants.dir.down;
     this.state = 'idle';
 }
 
-WorldCharacter.prototype.move = function(dir, layout){  
+WorldCharacter.prototype.move = function(dir, map){     
+    if(this.state !== 'idle'){
+        return {moved: false, turned: false};
+    }    
+
+    this.dir = dir;
+
+    const action = actions[Constants.getDir(dir)];
+    if(action){
+        return {moved: action(this, map), turned: true};
+    } 
+
+    return {turned: true};
+}
+
+WorldCharacter.prototype.interact = function(map){
     if(this.state !== 'idle'){
         return false;
     }
 
-    const action = actions[dir];
-    if(action){
-        return action(this, layout);
-    } 
+    let aimX, aimY;
 
+    switch(this.dir){
+        case Constants.dir.up:
+            aimY = this.y - 1;
+            aimX = this.x;
+            break;
+        case Constants.dir.down:
+            aimY = this.y + 1;
+            aimX = this.x;
+            break;
+        case Constants.dir.left:
+            aimX = this.x - 1;
+            aimY = this.y;
+            break;
+        case Constants.dir.right:
+            aimX = this.x + 1;
+            aimyY = this.y;
+            break;
+        default:
+            return false;
+    }
+
+    for(let i in map.npcs){
+        let npc = map.npcs[i];
+        if(npc.x === aimX && npc.y === aimY){
+            this.state = 'talking';
+            return npc;
+        }
+    }
     return false;
 }
 
 const actions = {
-    up: function(char, layout){
-        if(!checkNewPosition(char.x, char.y-1, layout)){
+    up: function(char, map){
+        if(!checkNewPosition(char.x, char.y-1, map)){
             return false;
         }
         char.state = 'walking';
@@ -36,8 +78,8 @@ const actions = {
         return true;
     },
 
-    down: function(char, layout){
-        if(!checkNewPosition(char.x, char.y+1, layout)){
+    down: function(char, map){
+        if(!checkNewPosition(char.x, char.y+1, map)){
             return false;
         }
         char.state = 'walking';
@@ -47,8 +89,8 @@ const actions = {
         return true;
     },
 
-    right: function(char, layout){
-        if(!checkNewPosition(char.x+1, char.y, layout)){
+    right: function(char, map){
+        if(!checkNewPosition(char.x+1, char.y, map)){
             return false;
         }
         char.state = 'walking';
@@ -58,8 +100,8 @@ const actions = {
         return true;
     },
 
-    left: function(char, layout){
-        if(!checkNewPosition(char.x-1, char.y, layout)){
+    left: function(char, map){
+        if(!checkNewPosition(char.x-1, char.y, map)){
             return false;
         }
         char.state = 'walking';
@@ -70,11 +112,29 @@ const actions = {
     }
 }
 
-function checkNewPosition(x, y, layout){
+function checkNewPosition(x, y, map){
+    const layout = map.layout;
+    const npcs = map.npcs;
+
     if(x < 0 || x >= layout[0].length){
         return false;
     }
     if(y < 0 || y >= layout.length){
+        return false;
+    }
+
+    for(let i in npcs){
+        const npc = npcs[i];
+        if(npc.x === x && npc.y === y){
+            return false;
+        }
+    }
+
+    const tile = layout[y][x];
+
+    if(tile === 01 || tile === 02 || tile === 03 || tile === 04 || tile === 05 || tile === 06 || 
+    tile === 10 || tile === 11 || tile === 13 || tile === 20 || tile === 21 || tile === 22 || 
+    tile === 23 || tile === 24 || tile === 07){
         return false;
     }
     

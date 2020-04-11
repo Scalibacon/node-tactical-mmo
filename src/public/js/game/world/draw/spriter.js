@@ -1,10 +1,41 @@
 import * as resources from '../../utils/resources.js';
+import { Sprite } from '../draw/Sprite.js';
 
 function loadSheets(){
     resources.load([
-        '/assets/world/tiles/tilemap0.png'
+        '/assets/world/tiles/tilemap0.png',
+        '/assets/world/char/Aprendizm.png',
+        '/assets/world/char/Aprendizf.png',
+
+        '/assets/world/npcs/npcs.png'
     ]);
     resources.onReady(() => console.log('Imagens carregadas'));
 }
 
-export {loadSheets};
+function manageCharSprite(job, gender){
+    const url = `/assets/world/char/${job}${gender}.png`;
+    let sprites = {};
+    let sw = 24, sh = 41, cw = sw * 1.2, ch = sh * 1.2;
+
+    for(let i = 0; i < 4; i++){
+        const sx = 1;
+        const sy = i * (sh + 1) + 1;
+        sprites[i] = new Sprite(resources.get(url), sx, sy, sw, sh, [1,0,1,2], cw, ch)
+    }
+
+    return sprites;
+}
+
+function manageNpcSprite(type, dir){
+    const url = '/assets/world/npcs/npcs.png';
+    const sw = 27, sh = 43, cw = sw * 1.1, ch = sh * 1.1;
+
+    const sx = 1 + type * sw;
+    const sy = 1 + dir * sh;
+
+    const sprite = new Sprite(resources.get(url), sx, sy, sw, sh, [0], cw, ch);
+
+    return sprite;
+}
+
+export {loadSheets, manageCharSprite, manageNpcSprite};

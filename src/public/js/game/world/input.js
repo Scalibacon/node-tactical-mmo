@@ -8,7 +8,7 @@ function setKey(e, status) {
 
 document.addEventListener('keydown', function(e) {
     if(e.key === 'ArrowUp' || e.key === 'ArrowDown' || 
-       e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
+       e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === ' '){
         e.preventDefault();
     }
     setKey(e, true);

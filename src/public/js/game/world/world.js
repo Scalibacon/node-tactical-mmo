@@ -1,8 +1,10 @@
 import { subscribe, socket } from './world-socket.js';
 import { drawMapTiles } from './draw/tilemap.js';
 import { Character } from './draw/Character.js';
+import { Npc } from './draw/Npc.js';
 import { listenAction } from './world-actions.js';
 import { Camera } from './draw/Camera.js';
+import { cell_size } from '../utils/constants.js';
 import * as resources from '../utils/resources.js';
 import * as spriter from './draw/spriter.js';
 
@@ -41,6 +43,11 @@ const handle_events = {
             data.map.players[i] = new Character(player);
         }
 
+        for(let i in data.map.npcs){
+            let npc = data.map.npcs[i];
+            data.map.npcs[i] = new Npc(npc);
+        }
+        
         state = data;
         startDrawing();
     },
@@ -56,13 +63,21 @@ const handle_events = {
     moveChar: function(data){
         const dir = data.dir;
         const id = data.id;
-        for(let i in state.map.players){
-            if(i === id){
-                const char = state.map.players[i];
-                char.move(dir);
-                return true;
-            }
-        }
+        const char = getChar(id);
+        if(char)            
+            char.move(dir);                   
+    },
+
+    turnChar: function(data){
+        const id = data.id;
+        const dir = data.dir;
+        const char = getChar(id);
+        if(char)
+            char.turn(dir);
+    },
+
+    startTalk: function(data){
+        console.log(data);
     }
 }
 
@@ -75,16 +90,16 @@ function startDrawing(){
 }
 
 function initializeCamera(){
-    const char = getPlayerChar();
-    const height = state.map.layout.length * 50;
-    const width = state.map.layout[0].length * 50;
+    const char = getChar(socket.id);
+    const height = state.map.layout.length * cell_size;
+    const width = state.map.layout[0].length * cell_size;
 
     camera = new Camera(canvas, char, width, height);
 }
 
-function getPlayerChar(){
+function getChar(id){
     for(let i in state.map.players){
-        if(i === socket.id){
+        if(i === id){
             return state.map.players[i];
         }
     }
@@ -125,7 +140,10 @@ function render(past_millis){
         char.render(ctx);
     }
 
-    camera.draw(ctx);
+    for(let i in state.map.npcs){
+        const npc = state.map.npcs[i];
+        npc.render(ctx);
+    }
 
     ctx.restore();	
 

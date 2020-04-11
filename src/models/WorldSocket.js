@@ -1,6 +1,7 @@
 const UserDAO = require('../dao/UserDAO');
 const WorldMap = require('./WorldMap');
 const WorldCharacter = require('./WorldCharacter');
+const { loadNpcs } = require('./WorldNpcs');
 let world;
 
 let maps = [];
@@ -27,11 +28,17 @@ module.exports.fillSocket = function(io){
 
         socket.on('moveChar', (data) => {
             const dir = data.dir;
-            const moved = moveChar(dir, socket);
-            if(moved){
+            const res = moveChar(dir, socket);
+            if(res.moved){
                 world.emit('moveChar', {id: socket.id, dir});
+            } else if(res.turned){
+                world.emit('turnChar', {id: socket.id, dir});
             }
-        })
+        });
+
+        socket.on('interact', (data) => {
+            interact(socket);
+        });
     });    
 
     return io;
@@ -58,7 +65,7 @@ function moveChar(dir, socket){
     }
 
     const char = maps[mapID].players[socketID]
-    return char.move(dir, maps[mapID].layout);
+    return char.move(dir, maps[mapID]);
 }
 
 async function enterMap(user_id, socket){
@@ -75,6 +82,15 @@ async function removeFromMap(mapID, socketID){
     delete maps[mapID].players[socketID];
 }
 
+function interact(socket){
+    const mapID = getCharMap(socket.id);
+    const char = maps[mapID].players[socket.id];
+
+    const result = char.interact(maps[mapID]);
+    if(result)
+        socket.emit('startTalk', result);
+}
+
 
 (() => {
     initializeMaps();
@@ -84,6 +100,7 @@ function initializeMaps(){
     for(let i = 0; i < 1; i++){
         maps[i] = {
             players: {},
+            npcs: loadNpcs(i),
             layout: WorldMap.loadMapLayout[i]()
         }
     }
