@@ -2,6 +2,7 @@ import { subscribe, socket } from './world-socket.js';
 import { drawMapTiles } from './draw/tilemap.js';
 import { Character } from './draw/Character.js';
 import { Npc } from './draw/Npc.js';
+import { Dialog } from './draw/Dialog.js'
 import { listenAction } from './world-actions.js';
 import { Camera } from './draw/Camera.js';
 import { cell_size } from '../utils/constants.js';
@@ -49,6 +50,7 @@ const handle_events = {
         }
         
         state = data;
+        state.interaction = null;
         startDrawing();
     },
 
@@ -77,7 +79,7 @@ const handle_events = {
     },
 
     startTalk: function(data){
-        console.log(data);
+        state.dialog = new Dialog(data);
     }
 }
 
@@ -114,7 +116,7 @@ function loop(){
 
     update(past_millis);
     render();
-    listenAction(socket);
+    listenAction(socket, state);
     requestAnimationFrame(loop);
 }
 
@@ -125,6 +127,13 @@ function update(past_millis){
     }
 
     camera.update();
+
+    if(state.dialog){
+        state.dialog.update(past_millis);
+        if(state.dialog.destroy){
+            state.dialog = undefined;
+        }
+    }
 }
 
 function render(past_millis){
@@ -136,16 +145,26 @@ function render(past_millis){
     drawMapTiles(state.map, ctx);
 
     for(let i in state.map.players){
+        if(i === socket.id)
+            continue;
         const char = state.map.players[i];
-        char.render(ctx);
-    }
+        if(char)
+            char.render(ctx);
+    }   
 
     for(let i in state.map.npcs){
         const npc = state.map.npcs[i];
         npc.render(ctx);
     }
 
+    const player = state.map.players[socket.id];
+    if(player)
+        player.render(ctx);
+
     ctx.restore();	
 
     //static
+    if(state.dialog){
+        state.dialog.render(ctx);
+    }    
 }

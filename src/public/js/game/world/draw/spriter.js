@@ -7,7 +7,9 @@ function loadSheets(){
         '/assets/world/char/Aprendizm.png',
         '/assets/world/char/Aprendizf.png',
 
-        '/assets/world/npcs/npcs.png'
+        '/assets/world/npcs/npcs.png',
+
+        '/assets/icons/sheet.png'
     ]);
     resources.onReady(() => console.log('Imagens carregadas'));
 }
@@ -30,12 +32,40 @@ function manageNpcSprite(type, dir){
     const url = '/assets/world/npcs/npcs.png';
     const sw = 27, sh = 43, cw = sw * 1.1, ch = sh * 1.1;
 
-    const sx = 1 + type * sw;
-    const sy = 1 + dir * sh;
+    const sx = (1 * type) + (type * sw);
+    const sy = (1 * dir) + (dir * sh) + 1;
 
     const sprite = new Sprite(resources.get(url), sx, sy, sw, sh, [0], cw, ch);
 
     return sprite;
 }
 
-export {loadSheets, manageCharSprite, manageNpcSprite};
+function getIcon(which){
+    const img = resources.get('/assets/icons/sheet.png');
+    let sx, sy, sw, sh;
+
+    switch(which){
+        case 'yes-button':
+            sx = 0;
+            sy = 0;
+            sw = 76;
+            sh = 41
+            break;
+        case 'no-button':
+            sx = 0;
+            sy = 42;
+            sw = 76; 
+            sh = 41;
+            break;
+        case 'select-arrow':
+            sx = 80;
+            sy = 2;
+            sw = 24;
+            sh = 32;
+            break;
+    }
+
+    return {img, sx, sy, sw, sh}
+}
+
+export {loadSheets, manageCharSprite, manageNpcSprite, getIcon};

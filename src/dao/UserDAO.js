@@ -50,7 +50,7 @@ module.exports.getUserProfile = async function(id){
 module.exports.getGamingUser = async function(id){
     try {
         const result = await connection('user AS U')
-            .select(["u.id", "u.username", "u.map", "u.x", "u.y", "c.name", "c.gender", "c.job"])
+            .select(["u.id", "u.username", "u.map", "u.x", "u.y", "u.progress", "c.name", "c.gender", "c.job"])
             .innerJoin("character AS c", "u.id", "c.id_user")
             .where({"u.id": id, "c.main": true})
             .first();
@@ -58,6 +58,18 @@ module.exports.getGamingUser = async function(id){
     } catch (err){
         console.log(err);
         return {error: "Error", message: "Posição não encontrada"};
+    }
+}
+
+module.exports.updatePosition = async function(id, map, x , y){
+    try {
+        await connection('user')
+            .update({map, x, y})
+            .where('id', id);    
+        return true;
+    } catch (err){
+        console.log(err);
+        return false;
     }
 }
 

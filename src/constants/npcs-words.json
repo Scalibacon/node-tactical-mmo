@@ -1,0 +1,29 @@
+[
+    {
+        "id": "01",
+        "progress": {
+            "default": {
+                "words": [
+                    "Se tiver alguma dúvida não hesite em perguntar ao prof. Carlos. Ele pode ser meio rígido, mas só quer ajudá-los.",
+                    "Só testando se o gerenciador de texto no dialog do front tá funcionando liso :P"
+                ],
+                "confirmation": false,
+                "yes": null,
+                "no": null
+            }
+        }        
+    },
+    {
+        "id": "02",
+        "progress": {
+            "default": {
+                "words": [
+                    "Gostaria de ouvir uma história?"
+                ],
+                "confirmation": true,
+                "yes": "Volte outra hora",
+                "no": "Eu não ia contar mesmo ¬¬"
+            }
+        }        
+    }
+]

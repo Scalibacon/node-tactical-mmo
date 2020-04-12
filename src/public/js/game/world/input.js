@@ -1,4 +1,5 @@
 let pressedKeys = {};
+let observers = [];
 
 function setKey(e, status) {    
     const key = e.key.toUpperCase();
@@ -12,9 +13,11 @@ document.addEventListener('keydown', function(e) {
         e.preventDefault();
     }
     setKey(e, true);
+
+    notifyAll(e.key);
 });
 
-document.addEventListener('keyup', function(e) {    
+document.addEventListener('keyup', function(e) {
     setKey(e, false);
 });
 
@@ -22,6 +25,20 @@ window.addEventListener('blur', function() {
     pressedKeys = {};
 });
 
-export function isPressed(key){
+function isPressed(key){
     return pressedKeys[key.toUpperCase()];
 }
+
+function notifyAll(event){
+	observers.forEach(function(observer){
+		observer(event);
+	});
+}
+
+function subscribe(observer){
+	observers.push(observer);
+}
+
+export {subscribe, isPressed};
+
+

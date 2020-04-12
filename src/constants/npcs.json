@@ -1,11 +1,29 @@
 [
     {    
         "id": "00",
-        "name": "Carlos",
+        "name": "Prof. Carlos",
         "x": 4,
         "y": 1,
         "type": 0,
         "dir": 0,
+        "map": 0
+    },
+    {    
+        "id": "01",
+        "name": "Ajudante Helena",
+        "x": 13,
+        "y": 5,
+        "type": 2,
+        "dir": 0,
+        "map": 0
+    },
+    {    
+        "id": "02",
+        "name": "Sra. Abigail",
+        "x": 10,
+        "y": 1,
+        "type": 1,
+        "dir": 3,
         "map": 0
     }
 ]

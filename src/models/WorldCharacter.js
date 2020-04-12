@@ -8,6 +8,7 @@ function WorldCharacter(game_user){
     this.y = parseInt(game_user.y);
     this.name = game_user.name;
     this.gender = game_user.gender;
+    this.progress = JSON.parse(game_user.progress);
     this.job = game_user.job;
     this.dir = Constants.dir.down;
     this.state = 'idle';
@@ -50,7 +51,7 @@ WorldCharacter.prototype.interact = function(map){
             break;
         case Constants.dir.right:
             aimX = this.x + 1;
-            aimyY = this.y;
+            aimY = this.y;
             break;
         default:
             return false;
@@ -59,8 +60,8 @@ WorldCharacter.prototype.interact = function(map){
     for(let i in map.npcs){
         let npc = map.npcs[i];
         if(npc.x === aimX && npc.y === aimY){
-            this.state = 'talking';
-            return npc;
+            const resp = npc.talk(this);
+            return resp;
         }
     }
     return false;

@@ -65,21 +65,26 @@ function moveChar(dir, socket){
     }
 
     const char = maps[mapID].players[socketID]
-    return char.move(dir, maps[mapID]);
+    const res = char.move(dir, maps[mapID]);
+    if(res.moved){
+        UserDAO.updatePosition(char.id, mapID, char.x, char.y);
+    }
+
+    return res;
 }
 
 async function enterMap(user_id, socket){
     const game_user = await UserDAO.getGamingUser(user_id);
     socket.join(game_user.map);
     
-    // maps[game_user.map].players[socket.id] = game_user;
     maps[game_user.map].players[socket.id] = WorldCharacter.create(game_user);
 
     return maps[game_user.map].players[socket.id];
 }
 
 async function removeFromMap(mapID, socketID){
-    delete maps[mapID].players[socketID];
+    if(maps[mapID].players[socketID])
+        delete maps[mapID].players[socketID];
 }
 
 function interact(socket){
@@ -87,8 +92,9 @@ function interact(socket){
     const char = maps[mapID].players[socket.id];
 
     const result = char.interact(maps[mapID]);
-    if(result)
-        socket.emit('startTalk', result);
+    if(result){
+        socket.emit(`start${result.type}`, {dialog: result.dialog, npc: result.npc, progress: result.progress});
+    }
 }
 
 
