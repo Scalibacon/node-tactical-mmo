@@ -33,7 +33,7 @@ exports.up = function(knex) {
             table.boolean('active').notNullable().defaultTo(true);
 
             table.string('name').notNullable();
-            table.string('gender').notNullable().defaultTo("M");
+            table.string('gender').notNullable().defaultTo("m");
             table.string('job').notNullable().defaultTo('Aprendiz');
             table.integer('level').notNullable().defaultTo(1);
             table.integer('experience').notNullable().defaultTo(0);

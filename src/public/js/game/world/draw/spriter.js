@@ -63,6 +63,12 @@ function getIcon(which){
             sw = 24;
             sh = 32;
             break;
+        case 'main-menu':
+            sx = 0;
+            sy = 84;
+            sw = 216;
+            sh = 291;
+            break;
     }
 
     return {img, sx, sy, sw, sh}

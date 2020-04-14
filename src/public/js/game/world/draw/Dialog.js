@@ -1,4 +1,4 @@
-import { subscribe } from '../input.js';
+import { subscribe, popObserver } from '../input.js';
 import { socket } from '../world-socket.js';
 import { getIcon } from '../draw/spriter.js';
 
@@ -10,22 +10,33 @@ function Dialog(server_dialog){
     this.confirmation = server_dialog.dialog.confirmation;
     this.yes = server_dialog.dialog.yes;
     this.no = server_dialog.dialog.no;
-    this.timeShowing = 0;
     this.destroy = false;
+    this.total_subs = 0;
 
-    this.selectedItem = 0;
+    this.npcID = server_dialog.npc;
+    this.progress = server_dialog.progress;
 
-    subscribe(e => {
-        nextWord(e, this)
+    this.selectedOption = 0;    
+
+    subscribe(key => {
+        nextWord(key, this)
     });
+    this.total_subs++;
+
+    subscribe(key => {
+        moveToOptionAbove(key, this)
+    });
+    this.total_subs++;
+
+    subscribe(key => {
+        moveToOptionBelow(key, this)
+    });
+    this.total_subs++;
 }
 
 Dialog.prototype.update = function(millis){
-    this.timeShowing += millis;
-
     if(this.current >= this.arrWords.length){
         this.destroy = true;
-        socket.emit('stopTalking');
     }
 }
 
@@ -58,15 +69,39 @@ Dialog.prototype.render = function(ctx){
 
             ctx.drawImage(img, sx, sy, sw, sh, btnX, btnY, sw, sh);
 
-            if(this.selectedItem === i){
+            if(this.selectedOption === i){
                 drawArrow(ctx, btnX, btnY, sh);
             }
         }
     }
 }
 
-Dialog.prototype.selectNextItem = function(){
-    
+Dialog.prototype.removeSubscription = function(){
+    for(let i = 0; i < this.total_subs; i++){
+        popObserver();
+    }
+}
+
+function moveToOptionAbove(key, dialog){
+    if(key !== "ARROWUP"){
+        return;
+    }
+
+    dialog.selectedOption--;
+    if(dialog.selectedOption < 0){
+        dialog.selectedOption = 1;
+    }
+}
+
+function moveToOptionBelow(key, dialog){
+    if(key !== "ARROWDOWN"){
+        return;
+    }
+
+    dialog.selectedOption++;
+    if(dialog.selectedOption > 1){
+        dialog.selectedOption = 0;
+    }
 }
 
 function drawArrow(ctx, x, y, height){
@@ -77,11 +112,22 @@ function drawArrow(ctx, x, y, height){
 }
 
 function nextWord(key, dialog){
-    if(key !== "e" || dialog.timeShowing < 300){
+    if(key !== "E"){
         return;
     }
+
+    if(dialog.current === dialog.arrWords.length - 1 && dialog.confirmation){
+        if(dialog.selectedOption === 0){
+            dialog.arrWords[dialog.current] = dialog.yes;
+            socket.emit('confirmedDialog', {npcID: dialog.npcID, progress: dialog.progress})
+        } else {
+            dialog.arrWords[dialog.current] = dialog.no;
+        }
+        dialog.confirmation = false;
+        return;
+    }
+
     dialog.current++;
-    dialog.timeShowing = 0;
 }
 
 function breakLine(str){

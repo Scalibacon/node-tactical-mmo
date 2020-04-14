@@ -15,7 +15,7 @@ exports.up = function(knex) {
         table.integer('x').notNullable().defaultTo(5);
         table.integer('y').notNullable().defaultTo(5);
 
-        table.string('progress').notNullable().defaultTo('[]');
+        table.string('progress').notNullable().defaultTo('{"0":true}');
 
         table.unique('username');
     });

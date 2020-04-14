@@ -12,19 +12,18 @@ function Npc(id, name, x, y, type, dir, map){
 }
 
 Npc.prototype.talk = function(char){
-    const word = getNpcWord(this.id);
-    if(!word){
+    const npcWords = getNpcWords(this.id);
+    if(!npcWords){
         return false;
     }
 
-    for(let i in char.progress){
-        const progress = char.progress[i];
-        if(word.progress[progress]){
-            return {type: "Talk", dialog: word.progress[progress], progress, npc: this.id}
+    for(let i in npcWords.progress){
+        if(char.progress[i]){
+            return {type: "Talk", dialog: npcWords.progress[i], i, progress: i, npc: this.id}
         }
-    }   
+    }
     
-    return {type: "Talk", dialog: word.progress['default'], progress: 'default', npc: this.id}
+    return {type: "Talk", dialog: npcWords.progress['default'], progress: 'default', npc: this.id}
 }
 
 module.exports.loadNpcs = function(mapID){
@@ -38,7 +37,7 @@ module.exports.loadNpcs = function(mapID){
     return npcs;
 }
 
-function getNpcWord(id){
+function getNpcWords(id){
     for(let i in wordsJSON){
         const word = wordsJSON[i];
         if(word.id === id){
@@ -46,4 +45,8 @@ function getNpcWord(id){
         }
     }
     return false;
+}
+
+module.exports.processCharDialog = function(char, npcID, progress){
+    console.log(`${char.name} respondeu sim para o NPC ${npcID} no progresso ${progress}`);
 }

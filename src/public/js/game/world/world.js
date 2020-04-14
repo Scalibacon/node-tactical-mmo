@@ -1,19 +1,13 @@
 import { subscribe, socket } from './world-socket.js';
 import { drawMapTiles } from './draw/tilemap.js';
-import { Character } from './draw/Character.js';
-import { Npc } from './draw/Npc.js';
-import { Dialog } from './draw/Dialog.js'
+import { State } from './draw/State.js';
 import { listenAction } from './world-actions.js';
 import { Camera } from './draw/Camera.js';
 import { cell_size } from '../utils/constants.js';
 import * as resources from '../utils/resources.js';
 import * as spriter from './draw/spriter.js';
 
-let state, 
-    canvas, 
-    ctx, 
-    camera,
-    last_time = Date.now();
+let state, canvas, ctx, camera;
 
 function createCanvas(){
     canvas = document.createElement('canvas');    
@@ -38,28 +32,19 @@ function validateEvents(event){
 }
 
 const handle_events = {
-    enterMap: function(data){
-        for(let i in data.map.players){
-            let player = data.map.players[i];
-            data.map.players[i] = new Character(player);
-        }
+    enterMap: function(data){        
+        state = new State(data);
+        state.convert();
 
-        for(let i in data.map.npcs){
-            let npc = data.map.npcs[i];
-            data.map.npcs[i] = new Npc(npc);
-        }
-        
-        state = data;
-        state.interaction = null;
         startDrawing();
     },
 
     addPlayerToMap: function(data){
-        state.map.players[data.socketID] = new Character(data.player);;
+        state.addPlayerToMap(data.socketID, data.player);
     },
 
     removePlayerFromMap: function(data){
-        delete state.map.players[data.socketID];
+       state.removePlayerFromMap(data.socketID);
     },
 
     moveChar: function(data){
@@ -79,7 +64,7 @@ const handle_events = {
     },
 
     startTalk: function(data){
-        state.dialog = new Dialog(data);
+        state.openDialog(data);
     }
 }
 
@@ -110,9 +95,9 @@ function getChar(id){
 
 function loop(){
     const now = Date.now();
-    const past_millis = (now - last_time);
+    const past_millis = (now - state.last_time);
 
-    last_time = now;
+    state.last_time = now;
 
     update(past_millis);
     render();
@@ -128,10 +113,10 @@ function update(past_millis){
 
     camera.update();
 
-    if(state.dialog){
-        state.dialog.update(past_millis);
-        if(state.dialog.destroy){
-            state.dialog = undefined;
+    if(state.active_menu){
+        state.active_menu.update(past_millis);
+        if(state.active_menu.destroy){
+            state.removeMenu();
         }
     }
 }
@@ -164,7 +149,6 @@ function render(past_millis){
     ctx.restore();	
 
     //static
-    if(state.dialog){
-        state.dialog.render(ctx);
-    }    
+    if(state.active_menu)
+        state.active_menu.render(ctx);       
 }

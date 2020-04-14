@@ -18,11 +18,26 @@
         "progress": {
             "default": {
                 "words": [
-                    "Gostaria de ouvir uma história?"
+                    "O Prof. Carlos é um homem muito dedicado às estratégias de guerra. Se quiser ser bem-sucedido em sua missão, é melhor ouví-lo com atenção."
+                ]
+            },
+            "0": {
+                "words": [
+                    "Poderia mandar uma mensagem a minha ajudante, por favor? O nome dela é Helena."
                 ],
                 "confirmation": true,
-                "yes": "Volte outra hora",
-                "no": "Eu não ia contar mesmo ¬¬"
+                "yes": "Obrigada! Ela está ali perto da porta",
+                "no": "Que pena, terei que pedir a outra pessoa..."
+            },
+            "1": {
+                "words": [
+                    "Ainda não a encontrou? Ela está perto bem ali, perto da porta, do lado de fora."
+                ]
+            },
+            "2": {
+                "words": [
+                    "Muito obrigada! Minha coluna não me permite andar direito, mesmo curtas distâncias. Como gratidão, pode ficar com isto."
+                ]
             }
         }        
     }

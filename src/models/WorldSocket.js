@@ -1,7 +1,7 @@
 const UserDAO = require('../dao/UserDAO');
 const WorldMap = require('./WorldMap');
 const WorldCharacter = require('./WorldCharacter');
-const { loadNpcs } = require('./WorldNpcs');
+const { loadNpcs, processCharDialog } = require('./WorldNpcs');
 let world;
 
 let maps = [];
@@ -39,6 +39,11 @@ module.exports.fillSocket = function(io){
         socket.on('interact', (data) => {
             interact(socket);
         });
+
+        socket.on('confirmedDialog', data => {
+            const char = getChar(socket.id);
+            processCharDialog(char, data.npcID, data.progress);
+        })
     });    
 
     return io;
@@ -54,6 +59,11 @@ function getCharMap(socketID){
         }
     }
     return false;
+}
+
+function getChar(socketID){
+    const mapID = getCharMap(socketID);
+    return maps[mapID].players[socketID];
 }
 
 function moveChar(dir, socket){

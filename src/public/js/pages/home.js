@@ -28,7 +28,7 @@ function getUser(){
                 alert(data.message);
                 return;
             } 
-            
+            console.log(data);
             showUserInfo(data);
         },
         statusCode: {
@@ -50,7 +50,7 @@ function showUserInfo(user){
     prof_silver.innerHTML += user.silver_coins;
 
     const prof_bronze = document.getElementById('prof-bronze');
-    prof_bronze.innerHTML += user.silver_coins;
+    prof_bronze.innerHTML += user.bronze_coins;
 }
 
 function showCharacters(chars){
