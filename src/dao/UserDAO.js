@@ -50,7 +50,7 @@ module.exports.getUserProfile = async function(id){
 module.exports.getGamingUser = async function(id){
     try {
         const result = await connection('user AS U')
-            .select(["u.id", "u.username", "u.map", "u.x", "u.y", "u.progress", "c.name", "c.gender", "c.job"])
+            .select(["u.id", "u.username", "u.map", "u.x", "u.y", "u.progress", "c.name", "c.gender", "c.job", "c.id AS char_id"])
             .innerJoin("character AS c", "u.id", "c.id_user")
             .where({"u.id": id, "c.main": true})
             .first();

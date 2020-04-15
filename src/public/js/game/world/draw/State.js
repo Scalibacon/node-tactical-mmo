@@ -8,7 +8,7 @@ import { Character } from './Character.js';
 import { Npc } from './Npc.js';
 import { Dialog } from './Dialog.js';
 import { Menu } from './Menu.js';
-import { subscribe, popObserver } from '../input.js';
+import { subscribe } from '../input.js';
 
 function State(server_state){
     this.mapID = server_state.mapID;
@@ -49,6 +49,9 @@ function toggleMenu(key, state){
     }
 
     if(state.active_menu){
+        if(state.active_menu.submenu){
+            return;
+        }
         state.removeMenu();
     } else {
         state.active_menu = new Menu();

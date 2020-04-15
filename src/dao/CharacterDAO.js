@@ -27,24 +27,35 @@ module.exports.create = async function(id_user, main, name, gender, nature){
     }
 }
 
-module.exports.getUserCharacters = async function(id_user){
+module.exports.getUserCharacters = async function(id_user, active){
     try {
-        const chars = await connection('character')
-            .select('*')         
-            .where('id_user', id_user)
-
-        for(let i in chars){
-            chars[i] = getCharJob(chars[i]);
-            chars[i].effort = await getCharEffort(chars[i].id);
-            chars[i].base_stats = await getBaseStats(chars[i].id)
-            chars[i].total_stats = getTotalStats(chars[i]);
+        let chars;
+        if(active === true || active === false){
+            chars = await connection('character')
+                .select('*')
+                .where({
+                    id_user: id_user,
+                    active: active            
+                });
+        } else {
+            chars = await connection('character').select('*').where('id_user', id_user);
         }
-
+        await loadCharsInfo(chars); 
         return chars;
     } catch(err){
         console.log(err);
         return false;
     }   
+}
+
+async function loadCharsInfo(chars){
+    for(let i in chars){
+        chars[i] = getCharJob(chars[i]);
+        chars[i].effort = await getCharEffort(chars[i].id);
+        chars[i].base_stats = await getBaseStats(chars[i].id)
+        chars[i].total_stats = getTotalStats(chars[i]);
+    }
+    return chars;
 }
 
 function getCharJob(char){

@@ -65,6 +65,12 @@ const handle_events = {
 
     startTalk: function(data){
         state.openDialog(data);
+    },
+
+    getActiveAllies: function(data){
+        if(state.active_menu && state.active_menu.submenu){
+            state.active_menu.submenu.allies = data.allies;
+        }        
     }
 }
 

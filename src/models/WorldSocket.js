@@ -1,5 +1,6 @@
 const UserDAO = require('../dao/UserDAO');
 const WorldMap = require('./WorldMap');
+const CharacterDAO = require('../dao/CharacterDAO');
 const WorldCharacter = require('./WorldCharacter');
 const { loadNpcs, processCharDialog } = require('./WorldNpcs');
 let world;
@@ -43,7 +44,13 @@ module.exports.fillSocket = function(io){
         socket.on('confirmedDialog', data => {
             const char = getChar(socket.id);
             processCharDialog(char, data.npcID, data.progress);
-        })
+        });
+
+        socket.on('getActiveAllies', async (data) => {
+            const char = getChar(socket.id);
+            const allies = await CharacterDAO.getUserCharacters(char.user_id);
+            socket.emit('getActiveAllies', {allies});
+        });
     });    
 
     return io;

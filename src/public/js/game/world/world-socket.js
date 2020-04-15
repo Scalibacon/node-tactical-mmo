@@ -36,6 +36,11 @@ export function connectToWorld(){
         const event = {type: 'startTalk', data};
         notifyAll(event)
     });
+
+    socket.on('getActiveAllies', data => {
+        const event = {type: 'getActiveAllies', data};
+        notifyAll(event)
+    });
 }
 
 function enterMap(){

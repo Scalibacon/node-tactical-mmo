@@ -1,5 +1,6 @@
 import { getIcon } from '../draw/spriter.js';
 import { subscribe, popObserver } from '../input.js';
+import { SubAllies } from './SubAllies.js';
 
 const options = ["Itens", "Aliados", "Quests", "Mapa", "Infos"];
 
@@ -8,25 +9,28 @@ function Menu(){
     this.total_subs = 0;
 
     this.selectedOption = 2;
+    this.submenu = null;
 
-    subscribe(e => {
-        selectOption(e, this);
+    subscribe(key => {
+        selectOption(key, this);
     });
     this.total_subs++;
 
-    subscribe(e => {
-        moveToOptionAbove(e, this);
+    subscribe(key => {
+        moveToOptionAbove(key, this);
     });
     this.total_subs++;
 
-    subscribe(e => {
-        moveToOptionBelow(e, this);
+    subscribe(key => {
+        moveToOptionBelow(key, this);
     });
     this.total_subs++;
 }
 
 Menu.prototype.update = function(millis){
-
+    if(this.submenu && this.submenu.destroy){
+        delete this.submenu;
+    }
 }
 
 Menu.prototype.render = function(ctx){
@@ -40,6 +44,10 @@ Menu.prototype.render = function(ctx){
     ctx.drawImage(img, sx, sy, sw, sh, cx, cy, sw, sh);
 
     this.drawArrow(ctx, cx, cy, sh);
+
+    if(this.submenu){
+        this.submenu.render(ctx);
+    }
 }
 
 Menu.prototype.drawArrow = function(ctx, menuX, menuY, menuH){
@@ -58,7 +66,7 @@ Menu.prototype.removeSubscription = function(){
 }
 
 function moveToOptionAbove(key, menu){
-    if(key !== 'ARROWUP'){
+    if(key !== 'ARROWUP' || menu.submenu){
         return;
     }
 
@@ -69,7 +77,7 @@ function moveToOptionAbove(key, menu){
 }
 
 function moveToOptionBelow(key, menu){
-    if(key !== 'ARROWDOWN'){
+    if(key !== 'ARROWDOWN' || menu.submenu){
         return;
     }
 
@@ -80,8 +88,14 @@ function moveToOptionBelow(key, menu){
 }
 
 function selectOption(key, menu){
-    if(key !== "E"){
+    if(key !== "E" || menu.submenu){
         return;
+    }
+
+    switch(options[menu.selectedOption]){
+        case "Aliados":
+            menu.submenu = new SubAllies();
+            break;
     }
     console.log( options[menu.selectedOption] );
 }

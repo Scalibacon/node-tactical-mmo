@@ -1,7 +1,8 @@
 const Constants = require('../utils/Constants');
 
 function WorldCharacter(game_user){
-    this.id = game_user.id;
+    this.user_id = game_user.id;
+    this.id = game_user.char_id;
     this.username = game_user.username;
     this.map = parseInt(game_user.map);
     this.x = parseInt(game_user.x);
