@@ -54,6 +54,8 @@ async function loadCharsInfo(chars){
         chars[i].effort = await getCharEffort(chars[i].id);
         chars[i].base_stats = await getBaseStats(chars[i].id)
         chars[i].total_stats = getTotalStats(chars[i]);
+        chars[i].weapon = JSON.parse(chars[i].weapon);
+        chars[i].active_skills = JSON.parse(chars[i].active_skills);
     }
     return chars;
 }

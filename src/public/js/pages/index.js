@@ -37,7 +37,6 @@ function login(){
                 showError(data.message, "login");
                 return;
             }
-            
             localStorage.setItem('id', data.id);
 
             window.location.replace('/home');

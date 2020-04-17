@@ -1,5 +1,7 @@
 const npcsJSON = require('../constants/npcs.json');
 const wordsJSON = require('../constants/npcs-words.json');
+const { updateProgress } = require('../dao/UserDAO');
+const { giveItemToUser } = require('../dao/ItemDAO');
 
 function Npc(id, name, x, y, type, dir, map){
     this.id = id;
@@ -47,6 +49,36 @@ function getNpcWords(id){
     return false;
 }
 
-module.exports.processCharDialog = function(char, npcID, progress){
-    console.log(`${char.name} respondeu sim para o NPC ${npcID} no progresso ${progress}`);
+module.exports.processCharDialog = async function(char, npcID, progress, resp){
+    const reaction = reactions[npcID];
+    if(reaction){
+        return await reaction(char, progress, resp);
+    }
+}
+
+const reactions = {
+    ["02"] : async function(char, progress, resp){
+        if(progress == 0 && resp === "yes"){
+            await progressUp(char, 1, 0);
+        } else 
+        if(progress == 2){            
+            await progressUp(char, 3, 2);
+            giveItemToUser(char.user_id, 2, 3);
+            return "Você recebeu Poção de bolso vermelha x3"
+        }
+    },
+    ["01"] : async function(char, progress, resp){
+        if(progress == 1){
+            await progressUp(char, 2, 1);
+        }
+    }
+}
+
+async function progressUp(char, after, before){
+    if(!isNaN(before)){
+        delete char.progress[before];
+    } 
+    char.progress[after] = true;
+    
+    await updateProgress(char.user_id, char.progress);
 }

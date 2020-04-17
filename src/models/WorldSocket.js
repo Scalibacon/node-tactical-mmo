@@ -27,7 +27,7 @@ module.exports.fillSocket = function(io){
             socket.to(mapID).emit('removePlayerFromMap', {socketID: socket.id});            
         });
 
-        socket.on('moveChar', (data) => {
+        socket.on('moveChar', (data) => {            
             const dir = data.dir;
             const res = moveChar(dir, socket);
             if(res.moved){
@@ -41,9 +41,12 @@ module.exports.fillSocket = function(io){
             interact(socket);
         });
 
-        socket.on('confirmedDialog', data => {
+        socket.on('finishDialog', async (data) => {
             const char = getChar(socket.id);
-            processCharDialog(char, data.npcID, data.progress);
+            const resp = await processCharDialog(char, data.npcID, data.progress, data.resp);
+            if(resp){
+                socket.emit('showMessage', {message: resp});
+            }
         });
 
         socket.on('getActiveAllies', async (data) => {
@@ -84,7 +87,7 @@ function moveChar(dir, socket){
     const char = maps[mapID].players[socketID]
     const res = char.move(dir, maps[mapID]);
     if(res.moved){
-        UserDAO.updatePosition(char.id, mapID, char.x, char.y);
+        UserDAO.updatePosition(char.user_id, mapID, char.x, char.y);
     }
 
     return res;

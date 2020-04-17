@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "type": "w",
+        "name": "Lâmina de aprendiz",
+        "description": "Adaga dada aos aprendizes da Academia Tática.",
+        "damage": "f",
+        "atk_bonus": 5
+    },
+    {
+        "id": 2,
+        "type": "c",
+        "name": "Poção de bolso vermelha",
+        "description": "Uma poção que cura 10 de HP de um aliado."
+    }
+]

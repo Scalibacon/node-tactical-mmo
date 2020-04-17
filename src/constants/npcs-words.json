@@ -4,12 +4,18 @@
         "progress": {
             "default": {
                 "words": [
-                    "Se tiver alguma dúvida não hesite em perguntar ao prof. Carlos. Ele pode ser meio rígido, mas só quer ajudá-los.",
-                    "Só testando se o gerenciador de texto no dialog do front tá funcionando liso :P"
+                    "Se tiver alguma dúvida não hesite em perguntar ao prof. Carlos. Ele pode ser meio rígido, mas só quer ajudá-los."
                 ],
                 "confirmation": false,
                 "yes": null,
                 "no": null
+            },
+            "1": { 
+                "words": [
+                "Oi? Você tem uma mensagem da Sra. Abigail para mim? Obrigada!",
+                ". . .",
+                "Aqui diz que preciso reabastecer o estoque de lentilha. Melhor eu me apressar! Mais uma vez obrigada."
+                ]
             }
         }        
     },
@@ -31,12 +37,12 @@
             },
             "1": {
                 "words": [
-                    "Ainda não a encontrou? Ela está perto bem ali, perto da porta, do lado de fora."
+                    "Ainda não a encontrou? Ela está bem ali, perto da porta, do lado de fora."
                 ]
             },
             "2": {
                 "words": [
-                    "Muito obrigada! Minha coluna não me permite andar direito, mesmo curtas distâncias. Como gratidão, pode ficar com isto."
+                    "Muito obrigada! Minha coluna não me permite andar direito, mesmo curtas distâncias. Como gratidão, pode ficar com isto. Será útil em sua jornada."
                 ]
             }
         }        

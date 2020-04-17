@@ -24,10 +24,7 @@ exports.up = function(knex) {
                 base_stats: '202041150149741',
                 effort: '202041150149741',
                 nature: 'Solitário',
-                gender: 'f',
-                
-                active_skills: '[0]',
-                itens: '[0]'
+                gender: 'f'
             });
         })
     })

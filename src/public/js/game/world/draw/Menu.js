@@ -2,7 +2,7 @@ import { getIcon } from '../draw/spriter.js';
 import { subscribe, popObserver } from '../input.js';
 import { SubAllies } from './SubAllies.js';
 
-const options = ["Itens", "Aliados", "Quests", "Mapa", "Infos"];
+const options = ["Itens", "Aliados", "Quests", "Mapa", "Infos", "Sair"];
 
 function Menu(){
     this.destroy = false;
@@ -96,8 +96,12 @@ function selectOption(key, menu){
         case "Aliados":
             menu.submenu = new SubAllies();
             break;
+        case "Sair":
+            window.location.replace('/home');
+            break;
     }
     console.log( options[menu.selectedOption] );
 }
+
 
 export { Menu };

@@ -37,10 +37,7 @@ exports.up = function(knex) {
             
                     base_stats: '202041150149740',
                     effort: '202041150149740',
-                    nature: 'Calmo',
-                    
-                    active_skills: '[0]',
-                    itens: '[0]'
+                    nature: 'Calmo'
                 });
             })
         })

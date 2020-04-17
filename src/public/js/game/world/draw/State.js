@@ -18,9 +18,57 @@ function State(server_state){
 
     this.active_menu = null;
 
+    this.message = {
+        msgs: [],
+        time: 0
+    }
+
     subscribe(key => {
         toggleMenu(key, this)
     });
+}
+
+State.prototype.update = function(millis){
+    if(this.active_menu){
+        this.active_menu.update(millis);
+        if(this.active_menu.destroy){
+            this.removeMenu();
+        }
+    }
+
+    if(this.message.msgs.length > 0){
+        this.message.time += millis;
+        if(this.message.time > 1000){
+            this.message.time = 0;
+            this.message.msgs.shift();
+        }
+    }
+}
+
+State.prototype.render = function(ctx){
+    if(this.active_menu){
+        this.active_menu.render(ctx);
+        return;
+    }
+
+    if(this.message.msgs.length > 0){
+        ctx.font = "bold 18px Arial";
+        ctx.shadowColor = "rgba(60, 120, 60, 0.75)";
+        ctx.shadowBlur = 5;
+        ctx.lineWidth = 3;
+
+        const x = ctx.canvas.clientWidth / 2 - 50 ;
+        const y = (ctx.canvas.clientHeight / 2 - 100) - this.message.time / 10;
+        ctx.strokeText(this.message.msgs[0], x, y);
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = "rgba(123, 235, 108, 1)";
+        ctx.fillText(this.message.msgs[0], x, y);
+    }
+}
+
+State.prototype.addMessage = function(msg){
+    this.message.msgs.push(msg);
 }
 
 State.prototype.convert = function(){

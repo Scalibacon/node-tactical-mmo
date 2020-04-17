@@ -71,6 +71,10 @@ const handle_events = {
         if(state.active_menu && state.active_menu.submenu){
             state.active_menu.submenu.allies = data.allies;
         }        
+    },
+
+    showMessage: function(data){
+        state.addMessage(data.message);
     }
 }
 
@@ -119,12 +123,7 @@ function update(past_millis){
 
     camera.update();
 
-    if(state.active_menu){
-        state.active_menu.update(past_millis);
-        if(state.active_menu.destroy){
-            state.removeMenu();
-        }
-    }
+    state.update(past_millis);
 }
 
 function render(past_millis){
@@ -154,7 +153,5 @@ function render(past_millis){
 
     ctx.restore();	
 
-    //static
-    if(state.active_menu)
-        state.active_menu.render(ctx);       
+    state.render(ctx);      
 }

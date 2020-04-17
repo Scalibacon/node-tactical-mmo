@@ -47,7 +47,7 @@ exports.up = function(knex) {
             table.string('effort').notNullable();
             table.string('nature').notNullable();
             table.string('active_skills').notNullable().defaultTo('[]');
-            table.string('itens').notNullable().defaultTo('[]');
+            table.string('weapon');
 
             table.foreign('base_stats').references('id').inTable('base_stats');
             table.foreign('effort').references('id').inTable('effort');

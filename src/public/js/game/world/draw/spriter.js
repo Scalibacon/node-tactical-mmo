@@ -67,7 +67,7 @@ function getIcon(which){
             sx = 0;
             sy = 84;
             sw = 216;
-            sh = 291;
+            sh = 302;
             break;
     }
 

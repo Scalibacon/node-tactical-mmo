@@ -1,4 +1,3 @@
-const connection = require('../database/connection');
 const natures = require('../constants/natures.json');
 
 module.exports.listNatures = async function(){

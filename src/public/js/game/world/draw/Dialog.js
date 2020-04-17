@@ -37,6 +37,7 @@ function Dialog(server_dialog){
 Dialog.prototype.update = function(millis){
     if(this.current >= this.arrWords.length){
         this.destroy = true;
+        socket.emit('finishDialog', {npcID: this.npcID, progress: this.progress, resp: 'finish'});
     }
 }
 
@@ -119,9 +120,10 @@ function nextWord(key, dialog){
     if(dialog.current === dialog.arrWords.length - 1 && dialog.confirmation){
         if(dialog.selectedOption === 0){
             dialog.arrWords[dialog.current] = dialog.yes;
-            socket.emit('confirmedDialog', {npcID: dialog.npcID, progress: dialog.progress})
+            socket.emit('finishDialog', {npcID: dialog.npcID, progress: dialog.progress, resp: 'yes'});
         } else {
             dialog.arrWords[dialog.current] = dialog.no;
+            socket.emit('finishDialog', {npcID: dialog.npcID, progress: dialog.progress, resp: 'no'});
         }
         dialog.confirmation = false;
         return;

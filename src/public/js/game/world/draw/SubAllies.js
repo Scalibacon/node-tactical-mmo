@@ -52,7 +52,7 @@ SubAllies.prototype.drawRight = function(ctx){
     let wordX = containerX + 30;
     let wordY = 40;        
     ctx.font = "bold 18px Arial";
-    console.log(ally)
+    // console.log(ally)
     ctx.fillStyle = "white";
 
     ctx.fillText(`HP: ${ally.total_stats.max_hp}`, wordX, wordY, 150);
@@ -76,6 +76,22 @@ SubAllies.prototype.drawRight = function(ctx){
     ctx.fillText(`Resistência: ${ally.total_stats.resistance}`, wordX, wordY, 150);
     wordX += 155;
     ctx.fillText(`Técnica: ${ally.total_stats.technique}`, wordX, wordY, 150);
+    wordX = containerX + 30;
+    wordY += 50;
+
+    ctx.fillStyle = "rgba(102, 51, 153, 1)"
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(containerX, wordY);
+    ctx.lineTo(containerX + containerW, wordY);
+    ctx.stroke();
+    wordY += 50;
+
+    ctx.fillStyle = "white";
+    if(!ally.weapon)
+        ctx.fillText(`Arma: Punhos`, wordX, wordY, 150);
+    else 
+        ctx.fillText(`Arma: ${ally.weapon.name}`, wordX, wordY, 150);
 }
 
 SubAllies.prototype.drawCenter = function(ctx){

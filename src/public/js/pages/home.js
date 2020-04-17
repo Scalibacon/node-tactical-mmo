@@ -6,9 +6,8 @@ function getCharacters(){
             if(data.error){
                 alert(data.message);
                 return;
-            } 
-            
-            console.log(data);
+            }             
+            // console.log(data);
             showCharacters(data); 
         },
         statusCode: {
@@ -57,8 +56,6 @@ function showCharacters(chars){
     let html = '';
 
     for(let i in chars){
-        chars[i].itens = JSON.parse(chars[i].itens);
-        chars[i].active_skills = JSON.parse(chars[i].active_skills);
         const img_class = chars[i].main === 1 ? "char-img main-img" : "char-img";
 
         html +=
@@ -88,18 +85,16 @@ function showCharacters(chars){
                 `<p>TEC: ${chars[i].total_stats.technique}</p>` +
                 `<p>SOR: ${chars[i].total_stats.luck}</p>` +
             '</section>' +
-            '<section class="big">';
-        if(chars[i].itens.length === 0){
+            '<section class="big">';            
+        if(!chars[i].weapon){
             html +=
-                '<p class="no">NO ITEM</p>';
+                '<p class="no">NO WEAPON</p>';
         } else {
-            for(let j in chars[i].itens){
-                html +=
-                `<span>`+
-                    `<img src="assets/items/${chars[i].itens[j].id}.png">` +
-                    `${chars[i].itens[j].name}` +
-                `</span>`;
-            }
+            html +=
+            `<span>`+
+                `<img src="assets/items/${chars[i].weapon.id}.png">` +
+                `${chars[i].weapon.name}` +
+            `</span>`;            
         }
         html += 
             '</section>' +

@@ -41,6 +41,11 @@ export function connectToWorld(){
         const event = {type: 'getActiveAllies', data};
         notifyAll(event)
     });
+
+    socket.on('showMessage', data => {
+        const event = {type: 'showMessage', data};
+        notifyAll(event)
+    });
 }
 
 function enterMap(){

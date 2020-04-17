@@ -1,6 +1,7 @@
 const md5 = require('md5');
 const connection = require('../database/connection');
 const generateID = require('../utils/generateID');
+const { getUserItens } = require('./ItemDAO');
 
 module.exports.createUser = async function(username, password, email){
     const user = await connection('user').where('username', username).select('id').first();
@@ -38,8 +39,8 @@ module.exports.listUsers = async function(){
 
 module.exports.getUserProfile = async function(id){
     try {
-        const profile = await connection('user').select('*').where('id', id).first();
-
+        let profile = await connection('user').select('*').where('id', id).first();
+        profile.itens = await getUserItens(id);
         return profile;
     } catch(err){
         console.log(err);
@@ -64,8 +65,20 @@ module.exports.getGamingUser = async function(id){
 module.exports.updatePosition = async function(id, map, x , y){
     try {
         await connection('user')
-            .update({map, x, y})
-            .where('id', id);    
+            .update({map: map, x: x, y: y})
+            .where('id', id); 
+        return true;
+    } catch (err){
+        console.log(err);
+        return false;
+    }
+}
+
+module.exports.updateProgress = async function(userID, progress){
+    try {
+        await connection('user')
+            .update('progress', JSON.stringify(progress))
+            .where('id', userID); 
         return true;
     } catch (err){
         console.log(err);

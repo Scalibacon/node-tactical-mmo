@@ -46,20 +46,23 @@ Character.prototype.update = function(past_millis){
 }
 
 Character.prototype.render = function(ctx){
+    ctx.save();
     this.sprites[this.dir].render(ctx, this.x, this.y);
     ctx.font = "14px arial";    
 
     const fontX = (this.x + this.width/2) - (this.name.length * 6)/2;
     const fontY = this.y - 7;
 
-    ctx.shadowColor="black";
-    ctx.shadowBlur=3;
-    ctx.lineWidth=3;
+    
+    ctx.shadowColor = "rgba(60,60,60,0.75)";
+    ctx.shadowBlur = 5;
+    ctx.lineWidth = 3;
     ctx.strokeText(this.name, fontX, fontY);
 
-    ctx.shadowBlur=0;
+    ctx.shadowBlur = 0;
     ctx.fillStyle = "rgba(220, 220, 220, 1)";
     ctx.fillText(this.name, fontX, fontY);
+    ctx.restore();
 }
 
 function updatePosition(char, variation){
