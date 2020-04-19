@@ -1,10 +1,12 @@
 const initializeMultiArray = require('../utils/initializeMultiArray');
+const portalsJSON = require('../constants/portals.json');
 
-const loadMapLayout = {};
+function loadMapLayout(mapID){
+    return layouts[mapID];
+}
 
-loadMapLayout["0"] = function(){
-
-    const layout = [
+const layouts = {
+    ["0"]: [
         [01,07,02,02,02,04,05,06,02,02,02,07,03,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
         [11,00,24,00,00,00,00,00,00,00,00,00,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
         [11,00,00,00,00,00,00,00,00,00,00,00,13,14,14,14,15,16,16,16,16,16,16,16,16,16,16,17,14,14,14],
@@ -21,10 +23,42 @@ loadMapLayout["0"] = function(){
         [11,00,00,00,00,00,00,00,00,00,00,00,13,14,14,14,35,36,36,36,36,36,36,36,36,36,36,37,14,14,14],
         [11,00,00,00,00,00,00,00,00,00,00,00,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
         [21,22,22,22,22,22,22,22,22,22,22,22,23,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14]
-
+    ],
+    ["1"]: [
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
+        [14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],
     ]
-    
-    return layout;
 }
 
-module.exports = {loadMapLayout};
+function loadMapPortals(mapID){
+    let map_portals = [];
+    const portals = portalsJSON.filter( portal => portal.spot1.map == mapID || portal.spot2.map == mapID );
+    for(let i in portals){
+        const portal = portals[i];
+        if(portal.spot1.map == mapID)
+            map_portals.push(portal.spot1);
+        if(portal.spot2.map == mapID)
+            map_portals.push(portal.spot2);
+    }
+    return map_portals;
+}
+
+function getOtherPortal(portal1){
+    const [portals] = portalsJSON.filter( portal => {
+        return (portal.spot1.map == portal1.map && portal.spot1.x == portal1.x && portal.spot1.y == portal1.y)
+        || (portal.spot2.map == portal1.map && portal.spot2.x == portal1.x && portal.spot2.y == portal1.y)
+    });
+    
+    if(portals.spot1.map == portal1.map){
+        return portals.spot2;
+    } else {
+        return portals.spot1;
+    }
+}
+
+module.exports = { loadMapLayout, loadMapPortals, getOtherPortal };

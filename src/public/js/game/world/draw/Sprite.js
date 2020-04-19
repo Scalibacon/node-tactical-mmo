@@ -22,7 +22,7 @@ Sprite.prototype.update = function(past_millis) {
     this.frame_index += this.speed * past_seconds;
 }
 
-Sprite.prototype.render = function(ctx, cx, cy, idle){
+Sprite.prototype.render = function(ctx, cx, cy){
     const max = this.arrFrames.length;   
     const roundedIndex = Math.floor(this.frame_index);    
     const frame = this.arrFrames[roundedIndex % max];

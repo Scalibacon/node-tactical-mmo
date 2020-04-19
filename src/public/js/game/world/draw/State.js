@@ -9,6 +9,7 @@ import { Npc } from './Npc.js';
 import { Dialog } from './Dialog.js';
 import { Menu } from './Menu.js';
 import { subscribe } from '../input.js';
+import { Portal } from './Things.js';
 
 function State(server_state){
     this.mapID = server_state.mapID;
@@ -80,6 +81,11 @@ State.prototype.convert = function(){
     for(let i in this.map.npcs){
         let npc = this.map.npcs[i];
         this.map.npcs[i] = new Npc(npc);
+    }
+
+    for(let i in this.map.portals){
+        let portal = this.map.portals[i];
+        this.map.portals[i] = new Portal(portal);
     }
 }
 

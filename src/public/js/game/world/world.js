@@ -1,13 +1,13 @@
 import { subscribe, socket } from './world-socket.js';
+import * as input from '../world/input.js';
 import { drawMapTiles } from './draw/tilemap.js';
 import { State } from './draw/State.js';
 import { listenAction } from './world-actions.js';
 import { Camera } from './draw/Camera.js';
 import { cell_size } from '../utils/constants.js';
 import * as resources from '../utils/resources.js';
-import * as spriter from './draw/spriter.js';
 
-let state, canvas, ctx, camera;
+let state, canvas, ctx, camera, animationID;
 
 function createCanvas(){
     canvas = document.createElement('canvas');    
@@ -20,7 +20,6 @@ function createCanvas(){
 
 export function prepareToDraw(){
     createCanvas();
-    spriter.loadSheets();
     subscribe(validateEvents); 
 }
 
@@ -32,7 +31,8 @@ function validateEvents(event){
 }
 
 const handle_events = {
-    enterMap: function(data){        
+    enterMap: function(data){   
+        input.start();     
         state = new State(data);
         state.convert();
 
@@ -80,7 +80,8 @@ const handle_events = {
 
 function startDrawing(){
     //validar se o state existe EEEE se os resources carregaram
-    if(state && resources.isReady()){
+    if(state && resources.isReady()){  
+        cancelAnimationFrame(animationID);      
         initializeCamera();
         loop();
     }
@@ -105,34 +106,40 @@ function getChar(id){
 
 function loop(){
     const now = Date.now();
-    const past_millis = (now - state.last_time);
+    const millis = (now - state.last_time);
 
     state.last_time = now;
 
-    update(past_millis);
-    render();
+    update(millis);
+    render(millis);
     listenAction(socket, state);
-    requestAnimationFrame(loop);
+    animationID = requestAnimationFrame(loop);
 }
 
-function update(past_millis){
+function update(millis){
     for(let i in state.map.players){
         const char = state.map.players[i];
-        char.update(past_millis);
+        char.update(millis);
     }
 
     camera.update();
 
-    state.update(past_millis);
+    state.update(millis);
 }
 
-function render(past_millis){
+function render(millis){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(0,0,0,1)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
 	ctx.translate(Math.floor(-camera.x), Math.floor(-camera.y));
 
     drawMapTiles(state.map, ctx);
+
+    for(let i in state.map.portals){
+        state.map.portals[i].render(ctx, millis);
+    }
 
     for(let i in state.map.players){
         if(i === socket.id)

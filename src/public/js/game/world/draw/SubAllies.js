@@ -201,7 +201,7 @@ function closeSubmenu(key, submenu){
 }
 
 function moveToOptionAbove(key, submenu){
-    if(key !== 'ARROWUP'){
+    if(key !== 'ARROWUP' || !submenu.allies){
         return;
     }
 
@@ -212,7 +212,7 @@ function moveToOptionAbove(key, submenu){
 }
 
 function moveToOptionBelow(key, submenu){
-    if(key !== 'ARROWDOWN'){
+    if(key !== 'ARROWDOWN' || !submenu.allies){
         return;
     }
 

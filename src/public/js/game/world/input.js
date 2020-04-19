@@ -14,40 +14,50 @@ function setKey(e, status) {
     pressedKeys[key] = status;
 }
 
-document.addEventListener('keydown', function(e) {
-    let key = e.key;
-    if(key === 'ArrowUp' || key === 'ArrowDown' || 
-       key === 'ArrowLeft' || key === 'ArrowRight' || key === ' '){
-        e.preventDefault();
-    }
-    setKey(e, true);
-
-    key = key.toUpperCase();
-    if(isNaN(oneShotKeys[key])){
-        oneShotKeys[key] = 0;
-    }
-    oneShotKeys[key] += 1;
-    
-    if(oneShotKeys[key] >= 10){
-        oneShotKeys[key] = 0;
-    }
-
-    if(isOneShot(key)){
-        notifyAll(key);
-    }
-});
-
-document.addEventListener('keyup', function(e) {
-    setKey(e, false);
-
-    const key = e.key.toUpperCase();
-    oneShotKeys[key] = 0;
-});
-
-window.addEventListener('blur', function() {
+function start(){
     pressedKeys = {};
+    observers = [];
     oneShotKeys = {};
-});
+
+    setEvents();
+}
+
+function setEvents(){
+    document.addEventListener('keydown', function(e) {
+        let key = e.key;
+        if(key === 'ArrowUp' || key === 'ArrowDown' || 
+           key === 'ArrowLeft' || key === 'ArrowRight' || key === ' '){
+            e.preventDefault();
+        }
+        setKey(e, true);
+    
+        key = key.toUpperCase();
+        if(isNaN(oneShotKeys[key])){
+            oneShotKeys[key] = 0;
+        }
+        oneShotKeys[key] += 1;
+        
+        if(oneShotKeys[key] >= 10){
+            oneShotKeys[key] = 0;
+        }
+    
+        if(isOneShot(key)){
+            notifyAll(key);
+        }
+    });
+    
+    document.addEventListener('keyup', function(e) {
+        setKey(e, false);
+    
+        const key = e.key.toUpperCase();
+        oneShotKeys[key] = 0;
+    });
+    
+    window.addEventListener('blur', function() {
+        pressedKeys = {};
+        oneShotKeys = {};
+    });
+}
 
 function isPressed(key){
     return pressedKeys[key.toUpperCase()];
@@ -72,4 +82,4 @@ function popObserver(){
     observers.pop()
 }
 
-export {subscribe, isPressed, popObserver, isOneShot};
+export { subscribe, isPressed, popObserver, isOneShot, start };

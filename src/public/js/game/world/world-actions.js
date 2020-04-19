@@ -9,7 +9,7 @@ export function listenAction(socket, state){
     }     
     
     if(dialog_lock > 0)
-        dialog_lock -= 16;    
+        dialog_lock -= 16; 
 
     if(isPressed('e') && dialog_lock <= 0){
         socket.emit('interact');              

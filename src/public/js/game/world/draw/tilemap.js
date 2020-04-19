@@ -6,14 +6,10 @@ export function drawMapTiles(map, ctx){
     
     for(let i = 0; i < layout.length; i++){
         for(let j = 0; j < layout[i].length; j++){
-
-            // ctx.fillStyle = `rgb(${255 - layout[i][j]*80},255,255)`;
-            // ctx.fillRect(j * cell_size, i * cell_size, cell_size, cell_size);
-
-            const sx = layout[i][j] % 10 * 62; //sourceX
-            const sy = parseInt(layout[i][j] / 10) * 62; //sourceY
             const sw = 62; //sourceWidth
             const sh = 62; //sourceHeight
+            const sx = layout[i][j] % 10 * sw; //sourceX
+            const sy = parseInt(layout[i][j] / 10) * sh; //sourceY            
             const cx = j * cell_size; //canvasX
             const cy = i * cell_size; //canvasY
             const cw = cell_size; //canvasWidth

@@ -1,0 +1,12 @@
++ Desenhar tilemap;
++ Andar pelo mapa;
++ Animação ao andar pelo mapa;
++ Desenhar NPCs;
++ Dialogar com NPCs;
++ Avançar progresso ao responder NPCs;
++ Trocar de mapa;
++ Abrir menu;
++ Sair do jogo;
+
++- Submenu de aliados;
+

@@ -1,5 +1,5 @@
 const UserDAO = require('../dao/UserDAO');
-const WorldMap = require('./WorldMap');
+const { loadMapLayout, loadMapPortals, getOtherPortal } = require('./WorldMap');
 const CharacterDAO = require('../dao/CharacterDAO');
 const WorldCharacter = require('./WorldCharacter');
 const { loadNpcs, processCharDialog } = require('./WorldNpcs');
@@ -11,20 +11,13 @@ module.exports.fillSocket = function(io){
     world = io.of('/world');
 
     world.on('connection', (socket) => {
-        socket.on('enterMap', async (user_id) => {
-            const player = await enterMap(user_id, socket); 
-            const mapID = player.map;
-            console.log(`Alguém entrou no mapa ${mapID}`);
-            socket.emit('enterMap', {mapID, map: maps[mapID]});
-
-            socket.to(mapID).emit('addPlayerToMap', {player, socketID: socket.id});
+        socket.on('enterMap', async (userID) => {
+            enterMap(userID, socket);
         });
 
         socket.on('disconnect', () => {
             console.log(`${socket.id} desconectou`);
-            const mapID = getCharMap(socket.id);
-            removeFromMap(mapID, socket.id);
-            socket.to(mapID).emit('removePlayerFromMap', {socketID: socket.id});            
+            removeFromMap(socket);                       
         });
 
         socket.on('moveChar', (data) => {            
@@ -32,6 +25,7 @@ module.exports.fillSocket = function(io){
             const res = moveChar(dir, socket);
             if(res.moved){
                 world.emit('moveChar', {id: socket.id, dir});
+                checkMapChange(socket);
             } else if(res.turned){
                 world.emit('turnChar', {id: socket.id, dir});
             }
@@ -97,14 +91,24 @@ async function enterMap(user_id, socket){
     const game_user = await UserDAO.getGamingUser(user_id);
     socket.join(game_user.map);
     
-    maps[game_user.map].players[socket.id] = WorldCharacter.create(game_user);
+    const player = WorldCharacter.create(game_user);
+    const mapID = player.map;   
 
-    return maps[game_user.map].players[socket.id];
+    maps[game_user.map].players[socket.id] = player; 
+    
+    console.log(`Alguém entrou no mapa ${mapID}`);
+    socket.emit('enterMap', {mapID, map: maps[mapID]});
+
+    socket.to(mapID).emit('addPlayerToMap', {player, socketID: socket.id});
 }
 
-async function removeFromMap(mapID, socketID){
-    if(maps[mapID].players[socketID])
-        delete maps[mapID].players[socketID];
+async function removeFromMap(socket){
+    const mapID = getCharMap(socket.id);
+    if(maps[mapID].players[socket.id]){
+        delete maps[mapID].players[socket.id];
+        socket.leave(mapID);
+        socket.to(mapID).emit('removePlayerFromMap', {socketID: socket.id}); 
+    }
 }
 
 function interact(socket){
@@ -117,17 +121,42 @@ function interact(socket){
     }
 }
 
+function checkMapChange(socket){
+    const mapID = getCharMap(socket.id);
+    const char = maps[mapID].players[socket.id];
+
+    for(let i in maps[mapID].portals){
+        const portal = maps[mapID].portals[i]
+        if(portal.x == char.x && portal.y == char.y){
+            const other_portal = getOtherPortal(portal);
+            changeMap(socket, other_portal);
+        }
+    }
+}
+
+function changeMap(socket, new_map){
+    const mapID = getCharMap(socket.id);
+    const char = maps[mapID].players[socket.id];
+    setTimeout(async () => {
+        // console.log(`${char.username} mudou de mapa`);
+        await UserDAO.updatePosition(char.user_id, new_map.map, new_map.x, new_map.y);
+        removeFromMap(socket);
+        enterMap(char.user_id, socket, new_map);
+    }, 250);
+}
+
 
 (() => {
     initializeMaps();
 })();
 
 function initializeMaps(){
-    for(let i = 0; i < 1; i++){
+    for(let i = 0; i < 2; i++){
         maps[i] = {
             players: {},
             npcs: loadNpcs(i),
-            layout: WorldMap.loadMapLayout[i]()
+            layout: loadMapLayout(i),
+            portals: loadMapPortals(i)
         }
     }
 }

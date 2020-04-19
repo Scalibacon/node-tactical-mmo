@@ -1,4 +1,5 @@
 import * as resources from '../../utils/resources.js';
+import { cell_size } from '../../utils/constants.js';
 import { Sprite } from '../draw/Sprite.js';
 
 function loadSheets(){
@@ -9,7 +10,8 @@ function loadSheets(){
 
         '/assets/world/npcs/npcs.png',
 
-        '/assets/icons/sheet.png'
+        '/assets/icons/sheet.png',
+        '/assets/world/tiles/portal.png'
     ]);
     resources.onReady(() => console.log('Imagens carregadas'));
 }
@@ -36,6 +38,19 @@ function manageNpcSprite(type, dir){
     const sy = (1 * dir) + (dir * sh) + 1;
 
     const sprite = new Sprite(resources.get(url), sx, sy, sw, sh, [0], cw, ch);
+
+    return sprite;
+}
+
+function manageThingSprite(type){
+    let sprite;
+
+    switch(type){
+        case 'portal':
+            const url = '/assets/world/tiles/portal.png';
+            sprite = new Sprite(resources.get(url), 0, 0, 46, 43, [0,1,2,3], cell_size, cell_size);
+            break;
+    }
 
     return sprite;
 }
@@ -74,4 +89,4 @@ function getIcon(which){
     return {img, sx, sy, sw, sh}
 }
 
-export {loadSheets, manageCharSprite, manageNpcSprite, getIcon};
+export {loadSheets, manageCharSprite, manageNpcSprite, manageThingSprite, getIcon};
